@@ -25,31 +25,6 @@
 .jupyter-appmode #jupyer-appmode-quit {
    display: block;
    position: absolute;
-   left: 5%;
+   right: 20px;
    top: 20px;
 }
-
-/*
-.jupyter-appmode #jupyer-appmode-quit {
-   display: block;
-   position: absolute;
-   right: 100px;
-   top: 30px;
-   color: #fff;
-   background-color: #337ab7;
-   border-color: #2e6da4;
-   border: 1px solid transparent;
-   border-radius: 4px;
-   padding: 6px 12px;
-   font-size: 14px;
-   font-weight: 400;
-}
-
-.jupyter-appmode #jupyer-appmode-quit:hover {
-    color: #fff;
-    background-color: #286090;
-    border-color: #204d74;
-    cursor: pointer;
-}
-
-/*

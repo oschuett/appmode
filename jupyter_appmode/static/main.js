@@ -3,58 +3,72 @@
 define([
     'jquery',
     'base/js/namespace',
+    'base/js/dialog',
     'base/js/events',
     'require',
 ], function(
     $,
     Jupyter,
+    dialog,
     events,
-    require,
-    toolbarTemplate
+    require
 ) {
     "use strict";
-//
-//    function set_input_visible(show) {
-//        var appmodeClass = 'jupyter-appmode';
-//        if(show){
-//            $('body').removeClass(appmodeClass);
-//        }else{
-//            $('body').addClass(appmodeClass);
-//            //alert(toolbarTemplate);
-//            //toolbarTemplate.clone().prependTo($('body'));
-//        }
-//        Jupyter.notebook.metadata.hide_input = !show;
-//        
-//        //if (show) $('div#header').show('slow');
-//        //else $('div#header').hide('slow');
-//        //
-//        var btn = $('#toggle_codecells');
-//        btn.toggleClass('active', !show);
-//        //
-//        var icon = btn.find('i');
-//        icon.toggleClass('fa-eye', show);
-//        icon.toggleClass('fa-eye-slash', !show);
-//        $('#toggle_codecells').attr(
-//           'title', (show ? 'Hide' : 'Show') + ' codecell inputs');
-//    }
-//
-    function toggle() {
-        //alert("toggle called");
-        set_input_visible($('#toggle_codecells').hasClass('active'));
-    }
 
+    //==========================================================================
+    function update_url_state(enabled) {
+        var l = window.location, s = l.search.slice(1);
+        if (enabled) {
+            if (s.split(/[&=]/).indexOf('appmode') === -1) {
+                s += (s.length ? '&' : '') + 'appmode';
+            }
+        } else {
+            var params = s.split('&');
+            var idx = params.indexOf('appmode');
+            if (idx !== -1) {
+                params.splice(idx, 1);
+            }
+            s = params.join('&');
+        }
+        var url = l.protocol + '//' + l.host + l.pathname + (s.length ? '?' + s : '');
+        window.history.replaceState(null, null, url);
+    }
+    
+    //==========================================================================
     function goto_app_mode() {
+        //TODO: check notbook is trusted
+        console.log("Going to application mode.");
+        update_url_state(true);
         $('body').addClass('jupyter-appmode');
+        Jupyter.notebook.restart_run_all({confirm: false});
     }
 
+    //==========================================================================
     function goto_normal_mode() {
+        console.log("Going to normal mode.");
+        update_url_state(false);
         $('body').removeClass('jupyter-appmode');
     }
 
-    //function initialize () {
-    //    set_input_visible(Jupyter.notebook.metadata.hide_input !== true);
-    //}
+    //==========================================================================
+    function initialize () {
+        var idx = window.location.search.slice(1).split(/[&=]/).indexOf('appmode');
+        if (idx !== -1){
+            if (Jupyter.notebook.trusted) {
+                goto_app_mode();
+            }else{
+                dialog.modal({
+                    title : 'Untrusted notebook',
+                    body : 'This notebook is not trusted, so appmode will not automatically start. You can still start it manually, though.',
+                    buttons: {'OK': {'class' : 'btn-primary'}},
+                    notebook: Jupyter.notebook,
+                    keyboard_manager: Jupyter.keyboard_manager,
+                });
+            }
+        }
+    }
 
+    //==========================================================================
     var load_css = function (name) {
         var link = document.createElement("link");
         link.type = "text/css";
@@ -62,12 +76,11 @@ define([
         link.href = require.toUrl(name);
         document.getElementsByTagName("head")[0].appendChild(link);
     };
-
+    
+    //==========================================================================
     var load_ipython_extension = function() {
         load_css("./main.css");
-        //<button class="btn btn-default" title="Switch to application mode" id="toggle_codecells"><i class="fa-arrows-alt fa"></i></button>
-        //var quit_button = $('<div id="jupyer-appmode-quit">Jupyter Mode &raquo;</div>');
-        var quit_button = $('<button id="jupyer-appmode-quit" class="btn btn-default" title="Switch to Jupyter mode" id="toggle_codecells">Jupyter&raquo;</button>');
+        var quit_button = $('<button id="jupyer-appmode-quit" class="btn btn-default" title="Switch to Jupyter mode">Jupyter&raquo;</button>');
         $('body').append(quit_button);
         quit_button.click(goto_normal_mode);
         
@@ -77,11 +90,12 @@ define([
             icon : 'fa-arrows-alt',
             callback : goto_app_mode
         }]);
-        //if (Jupyter.notebook !== undefined && Jupyter.notebook._fully_loaded) {
-        //    // notebook_loaded.Notebook event has already happened
-        //    initialize();
-        //}
-        //events.on('notebook_loaded.Notebook', initialize);
+        
+        if (Jupyter.notebook !== undefined && Jupyter.notebook._fully_loaded) {
+            // notebook_loaded.Notebook event has already happened
+            initialize();
+        }
+        events.on('notebook_loaded.Notebook', initialize);
     };
 
     return {
