@@ -1,0 +1,55 @@
+/* hide extraneous cell parts when in appmode  */
+.jupyter-appmode .celltoolbar,
+.jupyter-appmode .container .cell .prompt,
+.jupyter-appmode .container .cell .output_stderr,
+.jupyter-appmode .container .cell .output_error {
+   display: none !important; /* Necessary to override inline style set by notebook */
+}
+
+/* Dashboard preview */
+.jupyter-appmode #dashboard-hidden-header {
+    display: none;
+}
+.jupyter-appmode .cell > .input {
+    display: none !important; /* Necessary to override inline style set by notebook */
+}
+
+.jupyter-appmode #header {
+   display: none !important; /* Necessary to override inline style set by notebook */
+}
+
+#jupyer-appmode-quit {
+   display: none;
+}
+
+.jupyter-appmode #jupyer-appmode-quit {
+   display: block;
+   position: absolute;
+   left: 5%;
+   top: 20px;
+}
+
+/*
+.jupyter-appmode #jupyer-appmode-quit {
+   display: block;
+   position: absolute;
+   right: 100px;
+   top: 30px;
+   color: #fff;
+   background-color: #337ab7;
+   border-color: #2e6da4;
+   border: 1px solid transparent;
+   border-radius: 4px;
+   padding: 6px 12px;
+   font-size: 14px;
+   font-weight: 400;
+}
+
+.jupyter-appmode #jupyer-appmode-quit:hover {
+    color: #fff;
+    background-color: #286090;
+    border-color: #204d74;
+    cursor: pointer;
+}
+
+/*
