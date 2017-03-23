@@ -6,12 +6,29 @@
    display: none !important; /* Necessary to override inline style set by notebook */
 }
 
-/* Dashboard preview */
+.jupyter-appmode .cell,
+.jupyter-appmode .cell.selected {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
 .jupyter-appmode #dashboard-hidden-header {
     display: none;
 }
+
 .jupyter-appmode .cell > .input {
     display: none !important; /* Necessary to override inline style set by notebook */
+}
+
+/* disable display of paragraph anchor text*/
+.jupyter-appmode .container h1 .anchor-link,
+.jupyter-appmode .container h2 .anchor-link,
+.jupyter-appmode .container h3 .anchor-link,
+.jupyter-appmode .container h4 .anchor-link,
+.jupyter-appmode .container h5 .anchor-link,
+.jupyter-appmode .container h6 .anchor-link {
+    display: none;
 }
 
 .jupyter-appmode #header {

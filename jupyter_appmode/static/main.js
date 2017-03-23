@@ -5,12 +5,14 @@ define([
     'base/js/namespace',
     'base/js/dialog',
     'base/js/events',
+    'base/js/utils',
     'require',
 ], function(
     $,
     Jupyter,
     dialog,
     events,
+    utils,
     require
 ) {
     "use strict";
@@ -34,6 +36,26 @@ define([
         window.history.replaceState(null, null, url);
     }
     
+    var normal_unload_handler = window.onbeforeunload;
+
+    //==========================================================================
+    var appmode_unload_handler = function (e) {
+        // Jupyter.notebook.session.delete()// doesn't work because it's asyncrounous
+        // see notebook/static/services/sessions/session.js
+        var s = Jupyter.notebook.session;
+        if (s.kernel) {
+            s.events.trigger('kernel_killed.Session', {session: s, kernel: s.kernel});
+            s.kernel._kernel_dead();
+        }
+        utils.ajax(s.session_url, {
+            processData: false,
+            cache: false,
+            type: "DELETE",
+            dataType: "json",
+            async: false
+        });
+    };
+
     //==========================================================================
     function goto_app_mode() {
         //TODO: check notbook is trusted
@@ -41,6 +63,14 @@ define([
         update_url_state(true);
         $('body').addClass('jupyter-appmode');
         Jupyter.notebook.restart_run_all({confirm: false});
+
+        // disable code editing
+        $('.CodeMirror').each(function() {
+            this.CodeMirror.setOption('readOnly', "nocursor");
+        });
+
+        // install unload handler which simply kills the kernel
+        window.onbeforeunload = appmode_unload_handler;
     }
 
     //==========================================================================
@@ -48,6 +78,14 @@ define([
         console.log("Going to normal mode.");
         update_url_state(false);
         $('body').removeClass('jupyter-appmode');
+
+        // enable code editing
+        $('.CodeMirror').each(function() {
+            this.CodeMirror.setOption('readOnly', false);
+        });
+
+        // install normal unload handler
+        window.onbeforeunload = normal_unload_handler;
     }
 
     //==========================================================================
