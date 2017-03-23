@@ -118,22 +118,36 @@ define([
     //==========================================================================
     var load_ipython_extension = function() {
         load_css("./main.css");
-        var quit_button = $('<button id="jupyer-appmode-quit" class="btn btn-default" title="Switch to Jupyter mode">Jupyter&raquo;</button>');
-        $('body').append(quit_button);
-        quit_button.click(goto_normal_mode);
+                   
+        var logo_url = require.toUrl("./Mark.png");
+        html  = '<div id="jupyter-appmode-header">'
+        html += '<img id="matcloud-logo" src="'+logo_url+'">'
+        html += '<button id="jupyer-appmode-quit" title="Switch to Jupyter mode">Jupyter&raquo;</button>';
+        html += '</div>';
+        $('#header').append(html);
+        $('#jupyer-appmode-quit').click(goto_normal_mode);
         
-        Jupyter.toolbar.add_buttons_group([{
-            id : 'toggle_codecells',
-            label : 'Switch to application mode',
-            icon : 'fa-arrows-alt',
-            callback : goto_app_mode
-        }]);
+        html = '<button id="jupyer-appmode-start" class="btn btn-sm navbar-btn">App Mode&raquo;</button>'
+        $('#header-container').prepend(html);
+        $('#jupyer-appmode-start').click(goto_app_mode);
+        
+        //Jupyter.toolbar.add_buttons_group([{
+        //    id : 'toggle_codecells',
+        //    label : 'Switch to application mode',
+        //    icon : 'fa-arrows-alt',
+        //    callback : goto_app_mode
+        //}]);
         
         if (Jupyter.notebook !== undefined && Jupyter.notebook._fully_loaded) {
             // notebook_loaded.Notebook event has already happened
             initialize();
         }
         events.on('notebook_loaded.Notebook', initialize);
+        
+        
+        // TODO make temp copy of notebook behind the scene
+        //Notebook.prototype.copy_notebook 
+        //notebook.load_notebook(common_options.notebook_path);
     };
 
     return {

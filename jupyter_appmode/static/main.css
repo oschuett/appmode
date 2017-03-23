@@ -31,17 +31,72 @@
     display: none;
 }
 
-.jupyter-appmode #header {
-   display: none !important; /* Necessary to override inline style set by notebook */
+.jupyter-appmode #menubar-container {
+    display: none;
 }
+
+.jupyter-appmode .header-bar {
+    display: none;
+}
+
+.jupyter-appmode #header-container {
+    display: none;
+}
+
+.jupyter-appmode #header {
+   /* display: none !important; */ /* Necessary to override inline style set by notebook */
+    color: #FFF;
+    text-align: center;
+    padding: 8px 12px;
+    background: linear-gradient(to bottom,rgba(0,0,0,0.4) 0%,rgba(0,0,0,0) 64px),#263238 url(./header.jpg) top center;
+    background-size: auto,cover;  
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    height: 64px;
+    vertical-align: baseline;
+}
+
+#jupyter-appmode-header {
+    display: none;
+}
+
+.jupyter-appmode #jupyter-appmode-header {
+    display: block;
+}
+
+.jupyter-appmode #jupyer-appmode-start {
+    display: none;
+}
+    
+#jupyer-appmode-start {
+    float: right;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+    margin-left: 5px;
+}
+
+#jupyer-appmode-start:hover {
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+
 
 #jupyer-appmode-quit {
-   display: none;
+    float: right;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+    margin-left: 5px;
 }
 
-.jupyter-appmode #jupyer-appmode-quit {
-   display: block;
-   position: absolute;
-   right: 20px;
-   top: 20px;
+#jupyer-appmode-quit:hover {
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+
+#matcloud-logo {
+    float: left;
 }
