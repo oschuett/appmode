@@ -62,7 +62,16 @@ define([
         console.log("Going to application mode.");
         update_url_state(true);
         $('body').addClass('jupyter-appmode');
-        Jupyter.notebook.restart_run_all({confirm: false});
+
+        //Jupyter.notebook.restart_run_all({confirm: false});
+
+        var promise = Jupyter.notebook.restart_kernel({confirm: false});
+
+        // temporary hack to access url until I have a suitable widget
+        promise.then(function(value) {
+           Jupyter.notebook.kernel.execute("jupyter_notebook_url = '" + window.location + "'");
+           Jupyter.notebook.execute_all_cells();
+        });
 
         // disable code editing
         $('.CodeMirror').each(function() {
@@ -130,22 +139,22 @@ define([
         html = '<button id="jupyer-appmode-start" class="btn btn-sm navbar-btn">App Mode&raquo;</button>'
         $('#header-container').prepend(html);
         $('#jupyer-appmode-start').click(goto_app_mode);
-        
+
         //Jupyter.toolbar.add_buttons_group([{
         //    id : 'toggle_codecells',
         //    label : 'Switch to application mode',
         //    icon : 'fa-arrows-alt',
         //    callback : goto_app_mode
         //}]);
-        
+
         if (Jupyter.notebook !== undefined && Jupyter.notebook._fully_loaded) {
             // notebook_loaded.Notebook event has already happened
             initialize();
         }
+
         events.on('notebook_loaded.Notebook', initialize);
-        
-        
-        // TODO make temp copy of notebook behind the scene
+
+        //TODO make temp copy of notebook behind the scene
         //Notebook.prototype.copy_notebook 
         //notebook.load_notebook(common_options.notebook_path);
     };
