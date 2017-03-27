@@ -87,7 +87,10 @@ define([
         window.onbeforeunload = appmode_unload_handler;
 
         // hide loading screen
-        $('#jupyter-appmode-loader').slideUp();
+        setTimeout(function (){
+                $('#jupyter-appmode-loader').slideUp();
+        }, 2000); //two seconds should be enough for most cases
+
     }
 
     //==========================================================================
