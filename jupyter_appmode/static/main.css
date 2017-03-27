@@ -1,8 +1,11 @@
 /* hide extraneous cell parts when in appmode  */
+
+/* .jupyter-appmode .container .cell .output_stderr */
+/* .jupyter-appmode .container .cell .output_error */
+
+
 .jupyter-appmode .celltoolbar,
-.jupyter-appmode .container .cell .prompt,
-.jupyter-appmode .container .cell .output_stderr,
-.jupyter-appmode .container .cell .output_error {
+.jupyter-appmode .container .cell .prompt {
    display: none !important; /* Necessary to override inline style set by notebook */
 }
 
