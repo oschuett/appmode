@@ -80,6 +80,9 @@ define([
 
         // install unload handler which simply kills the kernel
         window.onbeforeunload = appmode_unload_handler;
+
+        // hide loading screen
+        $('#jupyter-appmode-loader').slideUp();
     }
 
     //==========================================================================
