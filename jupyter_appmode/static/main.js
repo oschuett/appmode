@@ -63,6 +63,11 @@ define([
         update_url_state(true);
         $('body').addClass('jupyter-appmode');
 
+        Jupyter.notebook.clear_all_output();
+
+        // disable autosave
+        Jupyter.notebook.set_autosave_interval(0);
+
         //Jupyter.notebook.restart_run_all({confirm: false});
 
         var promise = Jupyter.notebook.restart_kernel({confirm: false});
