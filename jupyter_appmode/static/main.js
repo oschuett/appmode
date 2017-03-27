@@ -59,7 +59,7 @@ define([
     //==========================================================================
     function goto_app_mode() {
         //TODO: check notbook is trusted
-        console.log("Going to application mode.");
+        console.log("Appmode: going to application mode.");
         update_url_state(true);
         $('body').addClass('jupyter-appmode');
 
@@ -84,7 +84,7 @@ define([
 
     //==========================================================================
     function goto_normal_mode() {
-        console.log("Going to normal mode.");
+        console.log("Appmode: going to normal mode.");
         update_url_state(false);
         $('body').removeClass('jupyter-appmode');
 
@@ -98,11 +98,22 @@ define([
     }
 
     //==========================================================================
-    function initialize () {
+    function initialize_step1() {
+
+        if (Jupyter.notebook !== undefined && Jupyter.notebook._fully_loaded) {
+            // notebook_loaded.Notebook event has already happened
+            initialize_step2();
+        }
+
+        events.on('notebook_loaded.Notebook', initialize_step2);
+    }
+
+    //==========================================================================
+    function initialize_step2() {
         var idx = window.location.search.slice(1).split(/[&=]/).indexOf('appmode');
         if (idx !== -1){
             if (Jupyter.notebook.trusted) {
-                goto_app_mode();
+                initialize_step3();
             }else{
                 dialog.modal({
                     title : 'Untrusted notebook',
@@ -112,6 +123,16 @@ define([
                     keyboard_manager: Jupyter.keyboard_manager,
                 });
             }
+        }
+    }
+
+    //==========================================================================
+    function initialize_step3() {
+        if (!utils.is_loaded('jupyter-js-widgets/extension')) {
+            setTimeout(initialize_step3, 100);
+            console.log("Appmode: waiting until ipywidgets are loaded");
+        }else{
+            goto_app_mode();
         }
     }
 
@@ -147,12 +168,7 @@ define([
         //    callback : goto_app_mode
         //}]);
 
-        if (Jupyter.notebook !== undefined && Jupyter.notebook._fully_loaded) {
-            // notebook_loaded.Notebook event has already happened
-            initialize();
-        }
-
-        events.on('notebook_loaded.Notebook', initialize);
+        initialize_step1();
 
         //TODO make temp copy of notebook behind the scene
         //Notebook.prototype.copy_notebook 
