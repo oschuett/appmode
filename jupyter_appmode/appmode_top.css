@@ -1,4 +1,4 @@
-#jupyer-appmode-leave {
+.jupyer-appmode-btn {
     float: right;
     color: #333;
     background-color: #fff;
@@ -6,7 +6,7 @@
     margin-left: 5px;
 }
 
-#jupyer-appmode-leave:hover {
+.jupyer-appmode-btn:hover {
     background-color: #e6e6e6;
     border-color: #adadad;
 }
