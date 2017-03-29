@@ -26,7 +26,7 @@ define([
         var url = utils.url_path_join.apply(null, url_parts);
         
         // tell server to clean up session, kernel, and tmp notebook file.
-        utils.ajax(url, {cache: false, type: "DELETE"});
+        utils.ajax(url, {cache: false, type: "DELETE", async: false});
     };
 
     //==========================================================================
