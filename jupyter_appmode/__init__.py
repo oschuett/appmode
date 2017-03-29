@@ -5,7 +5,7 @@
 def _jupyter_nbextension_paths():
     return [dict(
         section="notebook",
-        src="nb_extension_static",
+        src="static",
         dest="jupyter_appmode",
         require="jupyter_appmode/main")]
 

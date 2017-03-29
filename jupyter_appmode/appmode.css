@@ -1,0 +1,92 @@
+/* hide extraneous cell parts when in appmode  */
+
+/* .jupyter-appmode .container .cell .output_stderr */
+/* .jupyter-appmode .container .cell .output_error */
+
+/* 
+This warning will be gone in future version. For the time being we have to hide .output_stderr 
+https://github.com/jupyter-widgets/ipywidgets/blob/c3e13ec8f2f0f3f7c7ba166ae8bc39be312bfc30/ipywidgets/widgets/widget.py#L564
+
+This is because of a 3s timeout:
+https://github.com/jupyter-widgets/ipywidgets/blob/abe3ee87de634df9bdb821c73f618d33efb51a6d/jupyter-js-widgets/src/manager-base.ts#L263
+... which is probably cause by the run_all_cells, which blocks the kernel too long
+Possible solution is to run cells more slowly e.g. with 100ms time inbetween delays. 
+*/
+
+.cell > .input,
+.celltoolbar,
+.container .cell .prompt,
+.container .cell .output_stderr {
+   display: none !important; /* Necessary to override inline style set by notebook */
+}
+
+.cell,
+.cell.selected {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+/* disable display of paragraph anchor text*/
+.container h1 .anchor-link,
+.container h2 .anchor-link,
+.container h3 .anchor-link,
+.container h4 .anchor-link,
+.container h5 .anchor-link,
+.container h6 .anchor-link{
+    display: none !important; /* Necessary to override inline style set by notebook */
+}
+
+.header-bar,
+#login_widget,
+#save_widget,
+#kernel_logo_widget,
+#ipython_notebook,
+#menubar-container {
+    display: none;
+}
+
+#header {
+    color: #FFF;
+    text-align: center;
+    padding: 8px 12px;
+    background: #222222;
+    background: linear-gradient(to bottom,rgba(0,0,0,0.4) 0%,rgba(0,0,0,0) 64px),#263238 url({{ base_url + "nbextensions/jupyter_appmode/header.jpg"}}) top center;
+    background-size: auto,cover;  
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    height: 64px;
+    vertical-align: baseline;
+}
+
+#jupyer-appmode-leave {
+    float: right;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+    margin-left: 5px;
+}
+
+#jupyer-appmode-leave:hover {
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+
+#matcloud-logo {
+    float: left;
+}
+
+#jupyter-appmode-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #222222;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

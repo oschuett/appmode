@@ -34,7 +34,7 @@ class AppmodeHandler(IPythonHandler):
         tmp_path = tmp_model['path']
         tmp_name = tmp_path.rsplit('/', 1)[-1]
         
-        self.write(self.render_template('notebook.html',
+        self.write(self.render_template('appmode.html',
             notebook_path=tmp_path,
             notebook_name=tmp_name,
             kill_kernel=False,
@@ -53,20 +53,29 @@ class AppmodeHandler(IPythonHandler):
         
         for i in itertools.count():
             tmp_path = "%s/.%s-%i%s"%(dirname, basename, i, ext)
-            print "trying:", tmp_path
             if not cm.exists(tmp_path):
                 break
         
         # create tmp copy - allows opening same notebook multiple times
+        self.log.info("Appmode creating tmp copy: "+tmp_path)
         tmp_model = cm.copy(path, tmp_path)
+       
+        #TODO: make it read only
         return(tmp_model)
         
 #===============================================================================    
 def load_jupyter_server_extension(nbapp):
-    nbapp.log.info("Appmode server extension loaded.")
+    tmpl_dir = os.path.dirname(__file__)
+    # does not work, because init_webapp() happens before init_server_extensions()
+    #nbapp.extra_template_paths.append(tmpl_dir) # dows 
+    
+    # slight violation of Demeter's Law  
+    nbapp.web_app.settings['jinja2_env'].loader.searchpath.append(tmpl_dir)
+    
     web_app = nbapp.web_app
     host_pattern = '.*$'
     route_pattern = url_path_join(web_app.settings['base_url'], r'/apps%s' % path_regex)
     web_app.add_handlers(host_pattern, [(route_pattern, AppmodeHandler)])
+    nbapp.log.info("Appmode server extension loaded.")
     
 #EOF
