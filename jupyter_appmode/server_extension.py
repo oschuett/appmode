@@ -7,14 +7,17 @@ from notebook.base.handlers import IPythonHandler, FilesRedirectHandler, path_re
 from tornado import web
 
 class AppmodeHandler(IPythonHandler):
-    
+    #===========================================================================
     @web.authenticated
     def get(self, path):
         """get renders the notebook template if a name is given, or 
         redirects to the '/files/' handler if the name is not given."""
+
         path = path.strip('/')
+        self.log.info('Appmode get: %s', path)
+
         cm = self.contents_manager
-        
+
         # will raise 404 on not found
         try:
             model = cm.get(path, content=False)
@@ -42,6 +45,22 @@ class AppmodeHandler(IPythonHandler):
             # mathjax_config=self.mathjax_config # need in future versions
             )
         )
+
+    #===========================================================================
+    @web.authenticated
+    def delete(self, path):
+        path = path.strip('/')
+        self.log.info('Appmode deleting: %s', path)
+
+        # delete session, including the kernel
+        sm = self.session_manager
+        s = sm.get_session(path=path)
+        sm.delete_session(session_id=s['id'])
+
+        # delete tmp copy
+        cm = self.contents_manager
+        cm.delete(path)
+        self.finish()
 
     #===========================================================================
     def mk_tmp_copy(self, path):
