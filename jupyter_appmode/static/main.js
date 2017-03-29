@@ -78,7 +78,7 @@ define([
             initialize_step2();
         }else{
             console.log("Appmode: waiting for notebook to load.");
-            events.on('notebook_loaded.Notebook', initialize_step2);
+            events.one('notebook_loaded.Notebook', initialize_step2);
         }
     }
 
@@ -96,7 +96,7 @@ define([
             initialize_step3();
         }else{
             console.log("Appmode: waiting for kernel_ready event.");
-            events.on('kernel_ready.Kernel', initialize_step3);
+            events.one('kernel_ready.Kernel', initialize_step3);
         }
     }
 
