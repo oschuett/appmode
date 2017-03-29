@@ -137,7 +137,28 @@ define([
 
     //==========================================================================
     function initialize_step5() {
-        console.log("Appmode: initialize_step5"); 
+        console.log("Appmode: initialize_step5");
+
+        var cells_ready = true;
+        var cells = Jupyter.notebook.get_cells();
+        for (var i = 0; i < cells.length; i++) {
+            if(! cells[i].widgetarea ){
+                cells_ready = false;
+                break;
+            }
+        }
+
+        if (cells_ready) {
+            initialize_step6();
+        } else {
+            console.log("Appmode: waiting for cells to get ready.");
+            setTimeout(initialize_step5, 100);
+        }
+    }
+
+    //==========================================================================
+    function initialize_step6() {
+        console.log("Appmode: initialize_step6");
         //console.log("Appmode info_reply.status: "+Jupyter.notebook.kernel.info_reply.status);
         
         // disable autosave
