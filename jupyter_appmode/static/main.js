@@ -142,7 +142,7 @@ define([
         var cells_ready = true;
         var cells = Jupyter.notebook.get_cells();
         for (var i = 0; i < cells.length; i++) {
-            if(cell[i].cell_type==='code' && ! cells[i].widgetarea){
+            if(cells[i].cell_type==='code' && ! cells[i].widgetarea){
                 cells_ready = false;
                 break;
             }
