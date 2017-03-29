@@ -17,40 +17,16 @@ define([
 ) {
     "use strict";
 
-    var normal_unload_handler = window.onbeforeunload;
-
     //==========================================================================
     var appmode_unload_handler = function (e) {
         console.log("Appmode: running unload handler");
-        console.log("Appmode: path:"+Jupyter.notebook.notebook_path);
-                                 
-        // need to make a blocking ajax call, because we're the unload-handler.
-        utils.ajax(Jupyter.notebook.notebook_path, {
-            processData: false,
-            cache: false,
-            type: "DELETE",
-            dataType: "json",
-            async: false
-        });
         
-        // // Jupyter.notebook.session.delete()// doesn't work because it's asyncrounous
-        // // see notebook/static/services/sessions/session.js
-        // var s = Jupyter.notebook.session;
-        // if (s.kernel) {
-        //     s.events.trigger('kernel_killed.Session', {session: s, kernel: s.kernel});
-        //     s.kernel._kernel_dead();
-        // }
-        //  
-        // 
-        // utils.ajax(s.session_url, {
-        //     processData: false,
-        //     cache: false,
-        //     type: "DELETE",
-        //     dataType: "json",
-        //     async: false
-        // });
-        // 
-        // //TODO: remove notebook as well, but check that it has expected name
+        var nb = Jupyter.notebook;
+        var url_parts = [nb.base_url, 'apps', nb.notebook_path];
+        var url = utils.url_path_join.apply(null, url_parts);
+        
+        // tell server to clean up session, kernel, and tmp notebook file.
+        utils.ajax(url, {cache: false, type: "DELETE"});
     };
 
     //==========================================================================
@@ -109,13 +85,12 @@ define([
     //==========================================================================
     function initialize_step2() {
         console.log("Appmode: initialize_step2");
-        
         var nb = Jupyter.notebook
         
-        console.log("Appmode: nb.kernel:"+nb.kernel);
-        if(nb.kernel)
-            console.log("Appmode: nb.kernel.info_reply:"+nb.kernel.info_reply.status);
-                
+        //console.log("Appmode: nb.kernel:"+nb.kernel);
+        //if(nb.kernel)
+        //    console.log("Appmode: nb.kernel.info_reply:"+nb.kernel.info_reply.status);
+        
         if(nb.kernel && nb.kernel.info_reply.status) {
             console.log("Appmode: kernel already ready.");
             initialize_step3();

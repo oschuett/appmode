@@ -1,0 +1,29 @@
+#jupyer-appmode-leave {
+    float: right;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+    margin-left: 5px;
+}
+
+#jupyer-appmode-leave:hover {
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+
+#matcloud-logo {
+    float: left;
+}
+
+#jupyter-appmode-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #222222;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

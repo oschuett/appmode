@@ -3,7 +3,7 @@
 {% block header_buttons %}
   <!-- insert appmode loading screen as early as possible -->
   <style>
-    {% include 'appmode.css' %}
+    {% include 'appmode_top.css' %}
   </style>
   <div id="jupyter-appmode-loader">
     <img src="{{ base_url + "nbextensions/jupyter_appmode/gears.svg" }}">
@@ -13,3 +13,12 @@
   <img id="matcloud-logo" src="{{ base_url + "nbextensions/jupyter_appmode/Mark.png" }}">
   <button id="jupyer-appmode-leave" title="Switch to Jupyter mode">Jupyter&raquo;</button>       
 {% endblock header_buttons %}
+
+
+{% block script %}
+  {{super()}}
+  <!-- overwrite some styles -->
+  <style>
+    {% include 'appmode_bottom.css' %}
+  </style>
+{% endblock %}
