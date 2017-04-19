@@ -21,7 +21,8 @@ Possible solution is to run cells more slowly e.g. with 100ms time inbetween del
 }
 
 .cell,
-.cell.selected {
+.cell.selected,
+.cell.selected:before {
     background: transparent !important;
     border: none            !important;
     padding: 0              !important;

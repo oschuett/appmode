@@ -8,7 +8,7 @@ jupyter nbextension list
 
 jupyter serverextension disable --py jupyter_appmode
 jupyter serverextension enable  --py jupyter_appmode
-jupyter serverextension list    --py jupyter_appmode
+jupyter serverextension list
 
 # jupyter nbextension install   --sys-prefix --py jupyter_appmode
 # jupyter nbextension enable    --sys-prefix --py jupyter_appmode
