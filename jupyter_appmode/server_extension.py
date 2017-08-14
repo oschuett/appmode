@@ -87,10 +87,13 @@ def load_jupyter_server_extension(nbapp):
     tmpl_dir = os.path.dirname(__file__)
     # does not work, because init_webapp() happens before init_server_extensions()
     #nbapp.extra_template_paths.append(tmpl_dir) # dows 
-    
-    # slight violation of Demeter's Law  
-    nbapp.web_app.settings['jinja2_env'].loader.searchpath.append(tmpl_dir)
-    
+
+    # slight violation of Demeter's Law
+    rootloader = nbapp.web_app.settings['jinja2_env'].loader
+    for loader in getattr(rootloader, 'loaders', [rootloader]):
+        if hasattr(loader, 'searchpath') and tmpl_dir not in loader.searchpath:
+            loader.searchpath.append(tmpl_dir)
+
     web_app = nbapp.web_app
     host_pattern = '.*$'
     route_pattern = url_path_join(web_app.settings['base_url'], r'/apps%s' % path_regex)
