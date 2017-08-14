@@ -10,7 +10,7 @@ https://github.com/jupyter-widgets/ipywidgets/blob/c3e13ec8f2f0f3f7c7ba166ae8bc3
 This is because of a 3s timeout:
 https://github.com/jupyter-widgets/ipywidgets/blob/abe3ee87de634df9bdb821c73f618d33efb51a6d/jupyter-js-widgets/src/manager-base.ts#L263
 ... which is probably cause by the run_all_cells, which blocks the kernel too long
-Possible solution is to run cells more slowly e.g. with 100ms time inbetween delays. 
+Possible solution is to run cells more slowly e.g. with 100ms time inbetween delays.
 */
 
 .cell > .input,
@@ -38,23 +38,8 @@ Possible solution is to run cells more slowly e.g. with 100ms time inbetween del
     display: none !important;
 }
 
-.header-bar,
-#login_widget,
 #save_widget,
 #kernel_logo_widget,
-#ipython_notebook,
 #menubar-container {
     display: none !important;
-}
-
-#header {
-    color: #FFF;
-    text-align: center;
-    padding: 8px 12px;
-    background: #414141 !important;
-    font-size: 14px;
-    font-weight: 500;
-    /*text-transform: uppercase; */
-    height: 64px;
-    vertical-align: baseline;
 }

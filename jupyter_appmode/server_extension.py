@@ -30,13 +30,12 @@ class AppmodeHandler(IPythonHandler):
         if model['type'] != 'notebook':
             # not a notebook, redirect to files
             return FilesRedirectHandler.redirect_to_files(self, path)
-            
+
         # Ok let's roll ....
-        
         tmp_model = self.mk_tmp_copy(path)
         tmp_path = tmp_model['path']
         tmp_name = tmp_path.rsplit('/', 1)[-1]
-        
+
         self.write(self.render_template('appmode.html',
             notebook_path=tmp_path,
             notebook_name=tmp_name,
@@ -65,23 +64,23 @@ class AppmodeHandler(IPythonHandler):
     #===========================================================================
     def mk_tmp_copy(self, path):
         cm = self.contents_manager
-        
+
         dirname = os.path.dirname(path)
         fullbasename = os.path.basename(path)
         basename, ext = os.path.splitext(fullbasename)
-        
+
         for i in itertools.count():
             tmp_path = "%s/.%s-%i%s"%(dirname, basename, i, ext)
             if not cm.exists(tmp_path):
                 break
-        
+
         # create tmp copy - allows opening same notebook multiple times
         self.log.info("Appmode creating tmp copy: "+tmp_path)
         tmp_model = cm.copy(path, tmp_path)
-       
+
         #TODO: make it read only
         return(tmp_model)
-        
+
 #===============================================================================    
 def load_jupyter_server_extension(nbapp):
     tmpl_dir = os.path.dirname(__file__)
@@ -99,5 +98,5 @@ def load_jupyter_server_extension(nbapp):
     route_pattern = url_path_join(web_app.settings['base_url'], r'/apps%s' % path_regex)
     web_app.add_handlers(host_pattern, [(route_pattern, AppmodeHandler)])
     nbapp.log.info("Appmode server extension loaded.")
-    
+
 #EOF

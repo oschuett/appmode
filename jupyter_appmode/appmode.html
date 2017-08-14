@@ -1,7 +1,7 @@
 {% extends "notebook.html" %}
 
 {% block header_buttons %}
-  <!-- insert appmode loading screen as early as possible -->
+   <!-- insert appmode loading screen as early as possible -->
   <style>
     {% include 'appmode_top.css' %}
   </style>
@@ -10,11 +10,9 @@
   </div>
 
   {{super()}}
-  <img id="appmode-logo" src="{{ base_url + "nbextensions/jupyter_appmode/logo.png" }}">
-  <a href="{{ base_url }}" target="_blank" class="btn btn-sm navbar-btn jupyer-appmode-btn" title="Goto Jupyter dashboard">Jupyter&raquo;</a>
-  <button id="jupyer-appmode-leave" class="btn btn-sm navbar-btn jupyer-appmode-btn" title="Edit this app as notebook">Edit App&raquo;</button>
-{% endblock header_buttons %}
 
+  <button  id="jupyer-appmode-leave" class="btn btn-sm navbar-btn jupyer-appmode-btn" title="Edit this app as notebook">Edit App</button>
+{% endblock header_buttons %}
 
 {% block script %}
   {{super()}}
