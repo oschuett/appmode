@@ -1,0 +1,6 @@
+include jupyter_appmode/*.html
+include jupyter_appmode/*.css
+include jupyter_appmode/static/*.svg
+include jupyter_appmode/static/*.js
+include jupyter_appmode/static/*.css
+include jupyter_appmode/static/*.html
