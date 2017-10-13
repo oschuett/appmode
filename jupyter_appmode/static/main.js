@@ -50,7 +50,8 @@ define([
             var base_url = Jupyter.notebook.base_url;
             var prefix = base_url+"notebooks/"
             var path = window.location.pathname.substring(prefix.length);
-            window.location.pathname = base_url+"apps/"+path;
+	    // Not using location.pathname, that would urlencode again the path
+            window.location.href = base_url+"apps/"+path;
         }
     }
 
@@ -60,7 +61,8 @@ define([
         var base_url = Jupyter.notebook.base_url;
         var prefix = base_url+"apps/"
         var path = window.location.pathname.substring(prefix.length);
-        window.location.pathname = base_url+"notebooks/"+path;
+	// Not using location.pathname, that would urlencode again the path
+        window.location.href = base_url+"notebooks/"+path;
     }
 
     //==========================================================================
