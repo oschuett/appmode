@@ -2,7 +2,7 @@
 
 import os
 import itertools
-from notebook.utils import url_path_join, url_unescape
+from notebook.utils import url_path_join
 from notebook.base.handlers import IPythonHandler, FilesRedirectHandler, path_regex
 from tornado import web
 
@@ -14,7 +14,6 @@ class AppmodeHandler(IPythonHandler):
         redirects to the '/files/' handler if the name is not given."""
 
         path = path.strip('/')
-        path = url_unescape(path)
         self.log.info('Appmode get: %s', path)
 
         cm = self.contents_manager
