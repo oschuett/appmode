@@ -6,7 +6,7 @@ from setuptools import setup
 setup(
     name='appmode',
     license='MIT',
-    version='0.0.2',
+    version='0.0.3',
     author = 'Ole Schuett',
     author_email = 'ole.schuett@empa.ch',
     url='http://github.com/oschuett/appmode',
