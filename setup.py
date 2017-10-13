@@ -6,7 +6,7 @@ from setuptools import setup
 setup(
     name='appmode',
     license='MIT',
-    version='0.0.3',
+    version='0.0.4',
     author = 'Ole Schuett',
     author_email = 'ole.schuett@empa.ch',
     url='http://github.com/oschuett/appmode',
@@ -14,7 +14,7 @@ setup(
 
     packages=["appmode"],
     include_package_data = True,
-    install_requires=['notebook==5'],
+    install_requires=['notebook>=5'],
     data_files=[('share/jupyter/nbextensions/appmode', [
                     'appmode/static/main.js',
                     'appmode/static/gears.svg'
