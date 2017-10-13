@@ -5,13 +5,14 @@
   <style>
     {% include 'appmode_top.css' %}
   </style>
-  <div id="jupyter-appmode-loader">
-    <img src="{{ base_url + "nbextensions/jupyter_appmode/gears.svg" }}">
+  <div id="appmode-loader">
+    <img src="{{ base_url + "nbextensions/appmode/gears.svg" }}">
   </div>
+
+  <button id="appmode-leave" class="btn btn-sm navbar-btn btn-default" title="Edit this app as notebook">Edit App</button>
 
   {{super()}}
 
-  <button  id="jupyer-appmode-leave" class="btn btn-sm navbar-btn jupyer-appmode-btn" title="Edit this app as notebook">Edit App</button>
 {% endblock header_buttons %}
 
 {% block script %}

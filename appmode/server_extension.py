@@ -10,7 +10,7 @@ class AppmodeHandler(IPythonHandler):
     #===========================================================================
     @web.authenticated
     def get(self, path):
-        """get renders the notebook template if a name is given, or 
+        """get renders the notebook template if a name is given, or
         redirects to the '/files/' handler if the name is not given."""
 
         path = path.strip('/')
@@ -31,9 +31,11 @@ class AppmodeHandler(IPythonHandler):
             # not a notebook, redirect to files
             return FilesRedirectHandler.redirect_to_files(self, path)
 
+        # fix back button navigation
+        self.add_header("Cache-Control", "cache-control: private, max-age=0, no-cache, no-store")
+
         # Ok let's roll ....
-        tmp_model = self.mk_tmp_copy(path)
-        tmp_path = tmp_model['path']
+        tmp_path = self.mk_tmp_copy(path)
         tmp_name = tmp_path.rsplit('/', 1)[-1]
 
         self.write(self.render_template('appmode.html',
@@ -41,7 +43,7 @@ class AppmodeHandler(IPythonHandler):
             notebook_name=tmp_name,
             kill_kernel=False,
             mathjax_url=self.mathjax_url,
-            # mathjax_config=self.mathjax_config # need in future versions
+            mathjax_config=self.mathjax_config,
             )
         )
 
@@ -65,10 +67,10 @@ class AppmodeHandler(IPythonHandler):
     def mk_tmp_copy(self, path):
         cm = self.contents_manager
 
+        # find tmp_path
         dirname = os.path.dirname(path)
         fullbasename = os.path.basename(path)
         basename, ext = os.path.splitext(fullbasename)
-
         for i in itertools.count():
             tmp_path = "%s/.%s-%i%s"%(dirname, basename, i, ext)
             if not cm.exists(tmp_path):
@@ -76,12 +78,11 @@ class AppmodeHandler(IPythonHandler):
 
         # create tmp copy - allows opening same notebook multiple times
         self.log.info("Appmode creating tmp copy: "+tmp_path)
-        tmp_model = cm.copy(path, tmp_path)
+        cm.copy(path, tmp_path)
 
-        #TODO: make it read only
-        return(tmp_model)
+        return(tmp_path)
 
-#===============================================================================    
+#===============================================================================
 def load_jupyter_server_extension(nbapp):
     tmpl_dir = os.path.dirname(__file__)
     # does not work, because init_webapp() happens before init_server_extensions()

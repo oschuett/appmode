@@ -1,7 +1,7 @@
 /* hide extraneous cell parts when in appmode  */
 
-/* .jupyter-appmode .container .cell .output_stderr */
-/* .jupyter-appmode .container .cell .output_error */
+/* .appmode .container .cell .output_stderr */
+/* .appmode .container .cell .output_error */
 
 /* 
 This warning will be gone in future version. For the time being we have to hide .output_stderr 

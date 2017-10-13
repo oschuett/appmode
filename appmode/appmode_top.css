@@ -1,17 +1,4 @@
-.jupyer-appmode-btn {
-    float: right;
-    color: #333;
-    background-color: #fff;
-    border-color: #ccc;
-    margin: 5px;
-}
-
-.jupyer-appmode-btn:hover {
-    background-color: #e6e6e6;
-    border-color: #adadad;
-}
-
-#jupyter-appmode-loader {
+#appmode-loader {
     position: fixed;
     top: 0;
     left: 0;

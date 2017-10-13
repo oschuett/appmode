@@ -32,27 +32,15 @@ define([
     //==========================================================================
     function goto_app_mode() {
         console.log("Appmode: going to app mode.");
+        // kill Jupyter session
+        Jupyter.notebook.session.delete();
 
-        if (Jupyter.notebook.dirty) {
-            dialog.modal({
-                title : 'Unsaved changes.',
-                body : 'This notebook has unsaved changes. Please save before going to Appmode.',
-                buttons: {'OK': {'class' : 'btn-primary'}},
-                notebook: Jupyter.notebook,
-                keyboard_manager: Jupyter.keyboard_manager,
-            });
-
-        }else{
-            // kill Jupyter session
-            Jupyter.notebook.session.delete();
-
-            // change URL
-            var base_url = Jupyter.notebook.base_url;
-            var prefix = base_url+"notebooks/"
-            var path = window.location.pathname.substring(prefix.length);
-	    // Not using location.pathname, that would urlencode again the path
-            window.location.href = base_url+"apps/"+path;
-        }
+        // change URL
+        var base_url = Jupyter.notebook.base_url;
+        var prefix = base_url+"notebooks/"
+        var path = window.location.pathname.substring(prefix.length);
+        // Not using location.pathname, that would urlencode again the path
+        window.location.href = base_url+"apps/"+path;
     }
 
     //==========================================================================
@@ -123,23 +111,6 @@ define([
     //==========================================================================
     function initialize_step4() {
         console.log("Appmode: initialize_step4");
-
-        if (Jupyter.notebook.trusted) {
-            initialize_step5();
-        }else{
-            dialog.modal({
-                title : 'Untrusted notebook',
-                body : 'This notebook is not trusted, so appmode will not automatically start. You can still start it manually, though.',
-                buttons: {'OK': {'class' : 'btn-primary'}},
-                notebook: Jupyter.notebook,
-                keyboard_manager: Jupyter.keyboard_manager,
-            });
-        }
-    }
-
-    //==========================================================================
-    function initialize_step5() {
-        console.log("Appmode: initialize_step5");
         //console.log("Appmode info_reply.status: "+Jupyter.notebook.kernel.info_reply.status);
 
         // disable autosave
@@ -158,10 +129,10 @@ define([
         window.onbeforeunload = appmode_unload_handler;
 
         // register on_click handler
-        $('#jupyer-appmode-leave').click(goto_normal_mode);
+        $('#appmode-leave').click(goto_normal_mode);
 
         // hide loading screen
-        $('#jupyter-appmode-loader').slideUp();
+        $('#appmode-loader').slideUp();
 
         console.log("Appmode: initialization finished");
     }
@@ -172,7 +143,7 @@ define([
         // add button to toolbar in case appmode is not enabled
         Jupyter.toolbar.add_buttons_group([{
             id : 'toggle_codecells',
-            label : 'Switch to Application mode',
+            label : 'Appmode',
             icon : 'fa-arrows-alt',
             callback : goto_app_mode
         }]);
