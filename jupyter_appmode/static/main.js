@@ -51,7 +51,7 @@ define([
             var prefix = base_url+"notebooks/"
             var path = window.location.pathname.substring(prefix.length);
 	    // Not using location.pathname, that would urlencode again the path
-            window.location.pathname = base_url+"apps/"+path;
+            window.location.href = base_url+"apps/"+path;
         }
     }
 
