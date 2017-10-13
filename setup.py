@@ -6,13 +6,14 @@ from setuptools import setup
 setup(
     name='appmode',
     license='MIT',
-    version='0.0.1',
+    version='0.0.2',
     author = 'Ole Schuett',
     author_email = 'ole.schuett@empa.ch',
     url='http://github.com/oschuett/appmode',
     description='A Jupyter extensions that turns notebooks into web applications.',
 
     packages=["appmode"],
+    include_package_data = True,
     install_requires=['notebook==5'],
     data_files=[('share/jupyter/nbextensions/appmode', [
                     'appmode/static/main.js',
