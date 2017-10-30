@@ -36,16 +36,21 @@ define([
         Jupyter.notebook.session.delete();
 
         // build new URL
-        var url = new URL(window.location.href);
         var base_url = Jupyter.notebook.base_url;
         var prefix = base_url+"notebooks/"
-        var path = url.pathname.substring(prefix.length);
-        url.pathname = base_url + "apps/" + path
-        var scroll = $('#site').scrollTop();
-        url.searchParams.set("appmode_scroll", scroll);
+        var path = window.location.pathname.substring(prefix.length);
+        var search = window.location.search;
+        var scroll = "appmode_scroll=" + $('#site').scrollTop();
+        if (search.search(/appmode_scroll=\d+/) != -1){
+            search = search.replace(/appmode_scroll=\d+/g, scroll);
+        }else if (search.length == 0) {
+            search = "?" + scroll;
+        } else {
+            search += "&" + scroll;
+        }
 
         // goto new URL
-        window.location.href = url.href;
+        window.location.href = base_url + "apps/" + path + search;
     }
 
     //==========================================================================
@@ -91,6 +96,15 @@ define([
         //if(nb.kernel)
         //    console.log("Appmode: nb.kernel.info_reply:"+nb.kernel.info_reply.status);
 
+        // scroll to last position if in normal mode
+        var base_url = Jupyter.notebook.base_url;
+        if(window.location.pathname.startsWith(base_url+"notebooks/")){
+             var url = window.location.href;
+             var m = url.match(/appmode_scroll=(\d+)/);
+             if(m)
+                $('#site').scrollTop(m[1]);
+        }
+
         if(nb.kernel && nb.kernel.info_reply.status) {
             console.log("Appmode: kernel already ready.");
             initialize_step3();
@@ -115,11 +129,6 @@ define([
         if(window.location.pathname.startsWith(base_url+"apps/")){
             // appmode is active -> continue intializtion
             initialize_step4();
-        }else{
-            // normal mode is active -> scroll to last position
-             var url = new URL(window.location.href);
-             var scroll = url.searchParams.get("appmode_scroll");
-             $('#site').scrollTop(scroll);
         }
     }
 
