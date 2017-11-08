@@ -4,6 +4,8 @@ Appmode
 
 **A Jupyter extensions that turns notebooks into web applications.**
 
+.. image:: screenshots.png
+
 Installation
 ------------
 
