@@ -1,5 +1,3 @@
-// toggle display of all code cells' inputs
-
 define([
     'jquery',
     'base/js/namespace',
@@ -19,8 +17,6 @@ define([
 
     //==========================================================================
     var appmode_unload_handler = function (e) {
-        console.log("Appmode: running unload handler");
-
         var nb = Jupyter.notebook;
         var url_parts = [nb.base_url, 'apps', nb.notebook_path];
         var url = utils.url_path_join.apply(null, url_parts);
@@ -31,7 +27,6 @@ define([
 
     //==========================================================================
     function goto_app_mode() {
-        console.log("Appmode: going to app mode.");
         // kill Jupyter session
         Jupyter.notebook.session.delete();
 
@@ -55,8 +50,6 @@ define([
 
     //==========================================================================
     function goto_normal_mode() {
-        console.log("Appmode: going to normal mode.");
-
         // build new URL
         var url = new URL(window.location.href);
         var base_url = Jupyter.notebook.base_url;
@@ -70,32 +63,20 @@ define([
 
     //==========================================================================
     function kernel_inject_url(kernel) {
-        console.log("Appmode: injecting url into new kernel"); 
         kernel.execute("jupyter_notebook_url = '" + window.location + "'");
     }
 
     //==========================================================================
     function initialize_step1() {
-        console.log("Appmode: initialize_step1");
-
         if (Jupyter.notebook && Jupyter.notebook._fully_loaded) {
-            console.log("Appmode: notebook already loaded.");
             initialize_step2();
         }else{
-            console.log("Appmode: waiting for notebook to load.");
             events.one('notebook_loaded.Notebook', initialize_step2);
         }
     }
 
     //==========================================================================
     function initialize_step2() {
-        console.log("Appmode: initialize_step2");
-        var nb = Jupyter.notebook
-
-        //console.log("Appmode: nb.kernel:"+nb.kernel);
-        //if(nb.kernel)
-        //    console.log("Appmode: nb.kernel.info_reply:"+nb.kernel.info_reply.status);
-
         // scroll to last position if in normal mode
         var base_url = Jupyter.notebook.base_url;
         if(window.location.pathname.startsWith(base_url+"notebooks/")){
@@ -105,19 +86,16 @@ define([
                 $('#site').scrollTop(m[1]);
         }
 
+        var nb = Jupyter.notebook;
         if(nb.kernel && nb.kernel.info_reply.status) {
-            console.log("Appmode: kernel already ready.");
             initialize_step3();
         }else{
-            console.log("Appmode: waiting for kernel_ready event.");
             events.one('kernel_ready.Kernel', initialize_step3);
         }
     }
 
     //==========================================================================
     function initialize_step3() {
-        console.log("Appmode: initialize_step3");
-
         kernel_inject_url(Jupyter.notebook.kernel);
 
         // run kernel_inject_url() again when a new kernel is created
@@ -134,9 +112,6 @@ define([
 
     //==========================================================================
     function initialize_step4() {
-        console.log("Appmode: initialize_step4");
-        //console.log("Appmode info_reply.status: "+Jupyter.notebook.kernel.info_reply.status);
-
         // disable autosave
         Jupyter.notebook.set_autosave_interval(0);
 
