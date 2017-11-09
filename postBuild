@@ -1,0 +1,5 @@
+jupyter nbextension     enable --py appmode
+jupyter serverextension enable --py appmode
+
+# Notebooks w/ extensions that auto-run code must be "trusted" to work the first time
+jupyter trust example_app.ipynb
