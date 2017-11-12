@@ -1,3 +1,4 @@
+include LICENSE.txt
 include appmode/*.html
 include appmode/*.css
 include appmode/static/*.svg
