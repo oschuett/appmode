@@ -1,0 +1,7 @@
+# conda environment used by https://mybinder.org
+
+name: appmode-binder
+channels:
+  - conda-forge
+dependencies:
+  - appmode
