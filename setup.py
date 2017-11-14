@@ -31,8 +31,8 @@ setup(
 
 )
 
-print("Run the following commands to enable appmode:")
-print("$ jupyter serverextension enable --py appmode")
-print("$ jupyter nbextension     enable --py appmode")
+print("\nPlease run the following commands to enable appmode:")
+print("  jupyter serverextension enable --py --sys-prefix appmode")
+print("  jupyter nbextension     enable --py --sys-prefix appmode")
 
 #EOF

@@ -6,6 +6,7 @@ Appmode
 
 .. image:: screenshots.png
 
+
 Try it live
 -----------
 
@@ -18,11 +19,19 @@ Click the binder badge to try it live without installing anything. This will tak
 Installation
 ------------
 
+If you use ``conda``, you can install it as:
+
+.. code-block:: shell
+
+    conda install --channel conda-forge appmode
+
+If you use ``pip``, you can install it as:
+
 .. code-block:: shell
 
     pip install appmode
-    jupyter nbextension     enable --py appmode
-    jupyter serverextension enable --py appmode
+    jupyter nbextension     enable --py --sys-prefix appmode
+    jupyter serverextension enable --py --sys-prefix appmode
 
 
 Description

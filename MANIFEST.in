@@ -1,7 +1,6 @@
 include LICENSE.txt
-include appmode/*.html
-include appmode/*.css
-include appmode/static/*.svg
-include appmode/static/*.js
-include appmode/static/*.css
-include appmode/static/*.html
+include appmode/appmode.html
+include appmode/appmode_top.css
+include appmode/appmode_bottom.css
+include appmode/static/gears.svg
+include appmode/static/main.js
