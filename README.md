@@ -1,41 +1,39 @@
-=======
-Appmode
-=======
+# Appmode
 
 **A Jupyter extensions that turns notebooks into web applications.**
 
-.. image:: screenshots.png
+![screenshots](./screenshots.png)
 
+## Try it live
 
-Try it live
------------
-
-.. image:: https://mybinder.org/badge.svg
-   :target: https://mybinder.org/v2/gh/oschuett/appmode/master?urlpath=%2Fapps%2Fexample_app.ipynb
+[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/oschuett/appmode/master?urlpath=%2Fapps%2Fexample_app.ipynb)
 
 Click the binder badge to try it live without installing anything. This will take you directly to the "app" version of the notebook.
 
 
-Installation
-------------
+## Installation
 
-If you use ``conda``, you can install it as:
-
-.. code-block:: shell
-
-    conda install --channel conda-forge appmode
+If you use `conda`, you can install it as:
+```
+conda install --channel conda-forge appmode
+```
 
 If you use ``pip``, you can install it as:
+```
+pip install appmode
+jupyter nbextension     enable --py --sys-prefix appmode
+jupyter serverextension enable --py --sys-prefix appmode
+```
 
-.. code-block:: shell
+If you want to use [mybinder](https://mybinder.org) add the following `environment.yml` file to your repository:
+```
+channels:
+  - conda-forge
+dependencies:
+  - appmode
+```
 
-    pip install appmode
-    jupyter nbextension     enable --py --sys-prefix appmode
-    jupyter serverextension enable --py --sys-prefix appmode
-
-
-Description
------------
+## Description
 
 Appmode consist of a server-side and a notebook extension for Jupyter. Together these two extensions provide the following features:
 
