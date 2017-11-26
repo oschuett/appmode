@@ -51,14 +51,14 @@ define([
     //==========================================================================
     function goto_normal_mode() {
         // build new URL
-        var url = new URL(window.location.href);
         var base_url = Jupyter.notebook.base_url;
         var prefix = base_url+"apps/"
-        var path = url.pathname.substring(prefix.length);
-        url.pathname = base_url + "notebooks/" + path
+        var path = window.location.pathname.substring(prefix.length);
+        var new_url = base_url + "notebooks/" + path + window.location.search;
 
         // goto new URL
-        window.location.href = url.href;
+        // Not using location.pathname as it might urlencode the path again
+        window.location.href = new_url;
     }
 
     //==========================================================================
