@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Jupyter Extension points
+__version__ = '0.1.0'
 
+# Jupyter Extension points
 def _jupyter_nbextension_paths():
     return [dict(
         section="notebook",

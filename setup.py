@@ -2,11 +2,22 @@
 
 from __future__ import print_function
 from setuptools import setup
+from os import path
+import re
+
+
+def find_version():
+    here = path.abspath(path.dirname(__file__))
+    absfn = path.join(here, 'appmode/__init__.py')
+    content = open(absfn).read()
+    match = re.search(r"\n__version__ = ['\"]([^'\"]+)['\"]", content)
+    return match.group(1)
+
 
 setup(
     name='appmode',
     license='MIT',
-    version='0.1.0',
+    version = find_version(),
     author = 'Ole Schuett',
     author_email = 'ole.schuett@empa.ch',
     url='http://github.com/oschuett/appmode',
