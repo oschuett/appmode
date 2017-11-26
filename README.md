@@ -44,3 +44,13 @@ Appmode consist of a server-side and a notebook extension for Jupyter. Together 
 - A notebook can be opened multiple times in appmode without interference. This is achieved by creating temporary copies of the notebook for each active appmode view. Each appmode view has its dedicated ipython kernel. When an appmode page is closed the kernel is shutdown and the temporary copy gets removed.
 
 - To allow for passing information between notebooks via url parameters, the current url is injected into the variable ``jupyter_notebook_url``.
+
+## Development
+
+With the included [Dockerfile](./Dockerfile) a development environment can be quickly created:
+
+1. Install [Docker](https://docs.docker.com/engine/installation/).
+2. git clone this repository
+3. `docker build --tag appmode_dev ./`
+4. `docker run --init -ti -p8888:8888 appmode_dev`
+5. Browse to `http://localhost:8888/apps/example_app.ipynb`
