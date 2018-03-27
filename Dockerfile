@@ -8,7 +8,7 @@
 #
 #
 #
-FROM ubuntu:zesty
+FROM ubuntu:rolling
 USER root
 
 # Install some Debian package
