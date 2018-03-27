@@ -19,7 +19,7 @@ setup(
     license='MIT',
     version = find_version(),
     author = 'Ole Schuett',
-    author_email = 'ole.schuett@empa.ch',
+    author_email = 'ole.schuett@cp2k.org',
     url='http://github.com/oschuett/appmode',
     description='A Jupyter extensions that turns notebooks into web applications.',
 
