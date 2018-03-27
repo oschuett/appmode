@@ -33,6 +33,14 @@ dependencies:
   - appmode
 ```
 
+## Hidding the edit button
+
+In some cases it might be useful to hide the _Edit App_ button. This can be achieved by adding in the following line to the [custom.js](http://jupyter-notebook.readthedocs.io/en/stable/examples/Notebook/JavaScript%20Notebook%20Extensions.html#custom.js) file:
+```
+$('#appmode-leave').hide();
+```
+Beware that users can still leave Appmode by changing the URL manually.
+
 ## Description
 
 Appmode consist of a server-side and a notebook extension for Jupyter. Together these two extensions provide the following features:

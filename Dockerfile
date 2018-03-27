@@ -32,6 +32,10 @@ RUN pip3 install .                                            && \
     jupyter nbextension     enable --py --sys-prefix appmode && \
     jupyter serverextension enable --py --sys-prefix appmode
 
+# Uncomment following RUN line to hide the "Edit App" button.
+# Beware that this does not prevent users from changing the URL manually.
+# RUN mkdir -p ~/.jupyter/custom/ && echo "\$('#appmode-leave').hide();" >> ~/.jupyter/custom/custom.js
+
 # Launch Notebook server
 EXPOSE 8888
 CMD ["jupyter-notebook", "--ip=0.0.0.0", "--allow-root", "--no-browser", "--NotebookApp.token=''"]
