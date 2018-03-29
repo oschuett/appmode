@@ -26,6 +26,16 @@ define([
     };
 
     //==========================================================================
+    var kernel_busy_handler = function (e) {
+        $('#appmode-busy').css('visibility', 'visible');
+    }
+
+    //==========================================================================
+    var kernel_idle_handler = function (e) {
+        $('#appmode-busy').css('visibility', 'hidden');
+    }
+
+    //==========================================================================
     function goto_app_mode() {
         // kill Jupyter session
         Jupyter.notebook.session.delete();
@@ -126,6 +136,10 @@ define([
 
         // install unload-handler
         window.onbeforeunload = appmode_unload_handler;
+
+        // register kernel events
+        events.on('kernel_idle.Kernel',  kernel_idle_handler);
+        events.on('kernel_busy.Kernel',  kernel_busy_handler);
 
         // register on_click handler
         $('#appmode-leave').click(goto_normal_mode);

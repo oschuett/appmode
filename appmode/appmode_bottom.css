@@ -1,3 +1,8 @@
+#appmode-busy {
+    height: 30px;
+    visibility: hidden;
+}
+
 /* hide extraneous cell parts when in appmode  */
 .cell > .input,
 .celltoolbar,
