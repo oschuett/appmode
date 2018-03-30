@@ -33,14 +33,6 @@ dependencies:
   - appmode
 ```
 
-## Hidding the edit button
-
-In some cases it might be useful to hide the _Edit App_ button. This can be achieved by adding in the following line to the [custom.js](http://jupyter-notebook.readthedocs.io/en/stable/examples/Notebook/JavaScript%20Notebook%20Extensions.html#custom.js) file:
-```
-$('#appmode-leave').hide();
-```
-Beware that users can still leave Appmode by changing the URL manually.
-
 ## Description
 
 Appmode consist of a server-side and a notebook extension for Jupyter. Together these two extensions provide the following features:
@@ -52,6 +44,16 @@ Appmode consist of a server-side and a notebook extension for Jupyter. Together 
 - A notebook can be opened multiple times in appmode without interference. This is achieved by creating temporary copies of the notebook for each active appmode view. Each appmode view has its dedicated ipython kernel. When an appmode page is closed the kernel is shutdown and the temporary copy gets removed.
 
 - To allow for passing information between notebooks via url parameters, the current url is injected into the variable ``jupyter_notebook_url``.
+
+## Customization
+
+The UI elements of Appmode can be customized via the [custom.js](http://jupyter-notebook.readthedocs.io/en/stable/examples/Notebook/JavaScript%20Notebook%20Extensions.html#custom.js) file. Some examples are:
+```
+$('#appmode-leave').hide();                          // Hides the edit app button.
+$('#appmode-busy').hide();                           // Hides the kernel busy indicator.
+$('#appmode-loader').append('<h2>Loading...</h2>');  // Adds a loading message.
+```
+Beware that hiding the edit button does not prevent users from leaving Appmode by changing the URL manually.
 
 ## Development
 
