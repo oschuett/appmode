@@ -4,6 +4,7 @@ import os
 import itertools
 from notebook.utils import url_path_join
 from notebook.base.handlers import IPythonHandler, FilesRedirectHandler, path_regex
+import notebook.notebook.handlers as orig_handler
 from tornado import web
 
 class AppmodeHandler(IPythonHandler):
@@ -34,18 +35,24 @@ class AppmodeHandler(IPythonHandler):
         # fix back button navigation
         self.add_header("Cache-Control", "cache-control: private, max-age=0, no-cache, no-store")
 
-        # Ok let's roll ....
+        # gather template parameters
         tmp_path = self.mk_tmp_copy(path)
         tmp_name = tmp_path.rsplit('/', 1)[-1]
+        render_kwargs = {
+            'notebook_path': tmp_path,
+            'notebook_name': tmp_name,
+            'kill_kernel': False,
+            'mathjax_url': self.mathjax_url,
+            'mathjax_config': self.mathjax_config,
+        }
 
-        self.write(self.render_template('appmode.html',
-            notebook_path=tmp_path,
-            notebook_name=tmp_name,
-            kill_kernel=False,
-            mathjax_url=self.mathjax_url,
-            mathjax_config=self.mathjax_config,
-            )
-        )
+        # template parameters changed over time
+        if hasattr(orig_handler, "get_custom_frontend_exporters"):
+            get_cfw = orig_handler.get_custom_frontend_exporters
+            render_kwargs['get_custom_frontend_exporters'] = get_cfw
+
+        # Ok let's roll ....
+        self.write(self.render_template('appmode.html', **render_kwargs))
 
     #===========================================================================
     @web.authenticated

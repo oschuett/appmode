@@ -19,10 +19,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     less                  \
     nano                  \
     sudo                  \
+    git                   \
+    npm                   \
   && rm -rf /var/lib/apt/lists/*
 
-# install Jupyter
-RUN pip3 install notebook ipywidgets  && \
+# install Jupyter from git
+# WORKDIR /opt/notebook/
+# RUN git clone https://github.com/jupyter/notebook.git . && pip3 install .
+
+# install Jupyter via pip
+RUN pip3 install notebook
+
+# install ipywidgets
+RUN pip3 install ipywidgets  && \
     jupyter nbextension enable --sys-prefix --py widgetsnbextension
 
 # install Appmode
