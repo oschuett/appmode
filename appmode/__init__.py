@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__version__ = '0.3.0'
+__version__ = '0.4.0'
 
 # Jupyter Extension points
 def _jupyter_nbextension_paths():
