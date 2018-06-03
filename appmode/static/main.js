@@ -122,20 +122,27 @@ define([
 
     //==========================================================================
     function initialize_step4() {
+        // install unload-handler
+        window.onbeforeunload = appmode_unload_handler;
+
         // disable autosave
         Jupyter.notebook.set_autosave_interval(0);
 
-        // run all cells
-        Jupyter.notebook.clear_all_output();
-        Jupyter.notebook.execute_all_cells();
+        // disable keyboard shortcuts
+        Jupyter.keyboard_manager.command_shortcuts.clear_shortcuts();
+        Jupyter.keyboard_manager.edit_shortcuts.clear_shortcuts();
 
-        // disable code editing
+        // disable editing of text cells
+        $('.text_cell').off("dblclick");
+
+        // disable editing of raw cells
         $('.CodeMirror').each(function() {
             this.CodeMirror.setOption('readOnly', "nocursor");
         });
 
-        // install unload-handler
-        window.onbeforeunload = appmode_unload_handler;
+        // run all cells
+        Jupyter.notebook.clear_all_output();
+        Jupyter.notebook.execute_all_cells();
 
         // register kernel events
         events.on('kernel_idle.Kernel',  kernel_idle_handler);
