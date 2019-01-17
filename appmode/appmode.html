@@ -9,15 +9,19 @@
     <img src="{{ base_url + "nbextensions/appmode/gears.svg" }}" title="App is loading...">
   </div>
 
+  {% if show_edit_button %}
   <span>
      <button id="appmode-leave" class="btn btn-default btn-sm navbar-btn pull-right" title="Edit this app as notebook">Edit App</button>
   </span>
+  {% endif %}
+
   <span>
      <img id="appmode-busy" src="{{ base_url + "nbextensions/appmode/gears.svg" }}" title="Kernel Busy">
   </span>
 
-
+  {% if show_other_buttons %}
   {{super()}}
+  {% endif %}
 
 {% endblock header_buttons %}
 
