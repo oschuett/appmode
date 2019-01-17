@@ -7,7 +7,7 @@ from notebook.base.handlers import IPythonHandler, FilesRedirectHandler, path_re
 import notebook.notebook.handlers as orig_handler
 from tornado import web
 from traitlets.config import LoggingConfigurable
-from traitlets import Unicode
+from traitlets import Bool, Unicode
 
 
 class AppmodeManager(LoggingConfigurable):
@@ -16,14 +16,25 @@ class AppmodeManager(LoggingConfigurable):
     Defined separately from the AppmodeHandler to avoid multiple inheritance
     and constructor conflicts.
     """
-    trusted_path = Unicode(help="Only allow notebooks under this web path to launch in app mode", config=True)
-
+    trusted_path = Unicode('', help="Only allow notebooks under this web path to launch in app mode", config=True)
+    show_edit_button = Bool(True, help="Show Edit App button in the appmode header", config=True)
+    show_other_buttons = Bool(True, help="Show other notebook buttons in the appmode header (e.g., Logout)", config=True)
 
 class AppmodeHandler(IPythonHandler):
     @property
     def trusted_path(self):
         """Trusted appmode path"""
         return self.settings['appmode_manager'].trusted_path
+
+    @property
+    def show_edit_button(self):
+        """Edit App button in appmode header"""
+        return self.settings['appmode_manager'].show_edit_button
+
+    @property
+    def show_other_buttons(self):
+        """Other buttons in appmode header"""
+        return self.settings['appmode_manager'].show_other_buttons
 
     #===========================================================================
     @web.authenticated
@@ -67,6 +78,8 @@ class AppmodeHandler(IPythonHandler):
             'kill_kernel': False,
             'mathjax_url': self.mathjax_url,
             'mathjax_config': self.mathjax_config,
+            'show_edit_button': self.show_edit_button,
+            'show_other_buttons': self.show_other_buttons,
         }
 
         # template parameters changed over time

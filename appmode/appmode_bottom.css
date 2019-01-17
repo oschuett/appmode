@@ -34,3 +34,7 @@
 #menubar-container {
     display: none !important;
 }
+
+#ipython_notebook {
+    flex-grow: 1 !important;
+}
