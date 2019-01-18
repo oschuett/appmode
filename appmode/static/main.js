@@ -140,10 +140,6 @@ define([
             this.CodeMirror.setOption('readOnly', "nocursor");
         });
 
-        // run all cells
-        Jupyter.notebook.clear_all_output();
-        Jupyter.notebook.execute_all_cells();
-
         // register kernel events
         events.on('kernel_idle.Kernel',  kernel_idle_handler);
         events.on('kernel_busy.Kernel',  kernel_busy_handler);
@@ -151,11 +147,25 @@ define([
         // register on_click handler
         $('#appmode-leave').click(goto_normal_mode);
 
+        // clear all cell outputs persisted in the initial notebook
+        Jupyter.notebook.clear_all_output();
+        // try to load the jupyter-js-widgets extension to see if it's installed
+        utils.load_extension('jupyter-js-widgets/extension').then(function(module) {
+            // force the extension to initialize if it exists, even if it's a repeat
+            // operation, to avoid a race condition with executing cells that contain
+            // widgets
+            module.load_ipython_extension().then(initialize_step5);
+        }).catch(initialize_step5);
+    }
+
+    //==========================================================================
+    function initialize_step5() {
         // hide loading screen
         $('#appmode-loader').slideUp();
-
+        // execute all cells
+        Jupyter.notebook.execute_all_cells();
         console.log("Appmode: initialization finished");
-    }
+    };
 
     //==========================================================================
     var load_ipython_extension = function() {
