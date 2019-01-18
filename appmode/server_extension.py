@@ -10,8 +10,8 @@ from traitlets.config import LoggingConfigurable
 from traitlets import Bool, Unicode
 
 
-class AppmodeManager(LoggingConfigurable):
-    """Manager object containing server-side configuration settings for appmode.
+class Appmode(LoggingConfigurable):
+    """Object containing server-side configuration settings for appmode.
 
     Defined separately from the AppmodeHandler to avoid multiple inheritance
     and constructor conflicts.
