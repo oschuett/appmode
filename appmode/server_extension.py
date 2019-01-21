@@ -132,7 +132,7 @@ def load_jupyter_server_extension(nbapp):
     #nbapp.extra_template_paths.append(tmpl_dir) # dows
 
     # For configuration values that can be set server side
-    mgr = AppmodeManager(parent=nbapp)
+    mgr = Appmode(parent=nbapp)
     nbapp.web_app.settings['appmode_manager'] = mgr
 
     # slight violation of Demeter's Law
