@@ -11,30 +11,26 @@ from traitlets import Bool, Unicode
 
 
 class Appmode(LoggingConfigurable):
-    """Object containing server-side configuration settings for appmode.
-
-    Defined separately from the AppmodeHandler to avoid multiple inheritance
-    and constructor conflicts.
+    """Object containing server-side configuration settings for Appmode.
+    Defined separately from the AppmodeHandler to avoid multiple inheritance.
     """
-    trusted_path = Unicode('', help="Only allow notebooks under this web path to launch in app mode", config=True)
-    show_edit_button = Bool(True, help="Show Edit App button in the appmode header", config=True)
-    show_other_buttons = Bool(True, help="Show other notebook buttons in the appmode header (e.g., Logout)", config=True)
+    trusted_path = Unicode('', help="Run only notebooks below this path in Appmode.", config=True)
+    show_edit_button = Bool(True, help="Show Edit App button during Appmode.", config=True)
+    show_other_buttons = Bool(True, help="Show other buttons, e.g. Logout, during Appmode.", config=True)
 
+#===============================================================================
 class AppmodeHandler(IPythonHandler):
     @property
     def trusted_path(self):
-        """Trusted appmode path"""
-        return self.settings['appmode_manager'].trusted_path
+        return self.settings['appmode'].trusted_path
 
     @property
     def show_edit_button(self):
-        """Edit App button in appmode header"""
-        return self.settings['appmode_manager'].show_edit_button
+        return self.settings['appmode'].show_edit_button
 
     @property
     def show_other_buttons(self):
-        """Other buttons in appmode header"""
-        return self.settings['appmode_manager'].show_other_buttons
+        return self.settings['appmode'].show_other_buttons
 
     #===========================================================================
     @web.authenticated
@@ -45,11 +41,10 @@ class AppmodeHandler(IPythonHandler):
         path = path.strip('/')
         self.log.info('Appmode get: %s', path)
 
-        # Abort if the app we're trying to open does not live in the configured
-        # application path
+        # Abort if the app path is not below configured trusted_path.
         if not path.startswith(self.trusted_path):
-            self.log.warn('Appmode refused to launch %s outside trusted path %s', path, self.trusted_path)
-            raise web.HTTPError(401, 'Notebook is not in a trusted appmode path')
+            self.log.warn('Appmode refused to launch %s outside trusted path %s.', path, self.trusted_path)
+            raise web.HTTPError(401, 'Notebook is not within trusted Appmode path.')
 
         cm = self.contents_manager
 
@@ -132,8 +127,8 @@ def load_jupyter_server_extension(nbapp):
     #nbapp.extra_template_paths.append(tmpl_dir) # dows
 
     # For configuration values that can be set server side
-    mgr = Appmode(parent=nbapp)
-    nbapp.web_app.settings['appmode_manager'] = mgr
+    appmode = Appmode(parent=nbapp)
+    nbapp.web_app.settings['appmode'] = appmode
 
     # slight violation of Demeter's Law
     rootloader = nbapp.web_app.settings['jinja2_env'].loader
@@ -145,6 +140,10 @@ def load_jupyter_server_extension(nbapp):
     host_pattern = '.*$'
     route_pattern = url_path_join(web_app.settings['base_url'], r'/apps%s' % path_regex)
     web_app.add_handlers(host_pattern, [(route_pattern, AppmodeHandler)])
-    nbapp.log.info("Appmode server extension loaded with trusted path: %s", mgr.trusted_path)
+
+    if appmode.trusted_path:
+        nbapp.log.info("Appmode server extension loaded with trusted path: %s", appmode.trusted_path)
+    else:
+        nbapp.log.info("Appmode server extension loaded.")
 
 #EOF

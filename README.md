@@ -45,7 +45,14 @@ Appmode consist of a server-side and a notebook extension for Jupyter. Together 
 
 - To allow for passing information between notebooks via url parameters, the current url is injected into the variable ``jupyter_notebook_url``.
 
-## Customization
+## Server Side Configuration
+
+Appmode has the following configuration options:
+- `Appmode.trusted_path` Run only notebooks below this path in Appmode. Default: No restrictions.
+- `Appmode.show_edit_button` Show _Edit App_ button during Appmode. Default: True.
+- `Appmode.show_other_button` Show other buttons, e.g. Logout, during Appmode. Default: True.
+
+## Client Side Customization
 
 The UI elements of Appmode can be customized via the [custom.js](http://jupyter-notebook.readthedocs.io/en/stable/examples/Notebook/JavaScript%20Notebook%20Extensions.html#custom.js) file. Some examples are:
 ```
