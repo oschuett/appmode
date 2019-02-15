@@ -47,7 +47,7 @@ Appmode consist of a server-side and a notebook extension for Jupyter. Together 
 
 ## Server Side Configuration
 
-Appmode has the following configuration options:
+Appmode adds the following [configuration options](https://jupyter-notebook.readthedocs.io/en/stable/config.html):
 - `Appmode.trusted_path` Run only notebooks below this path in Appmode. Default: No restrictions.
 - `Appmode.show_edit_button` Show _Edit App_ button during Appmode. Default: True.
 - `Appmode.show_other_button` Show other buttons, e.g. Logout, during Appmode. Default: True.
