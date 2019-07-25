@@ -3,7 +3,7 @@
 #
 #   This Dockerfile is mainly meant for developing and testing:
 #     1. docker build --tag appmode ./
-#     2. docker run --init -ti -p8888:8888 appmode
+#     2. docker run --init -ti -p127.0.0.1:8888:8888 appmode
 #     3. open http://localhost:8888/apps/example_app.ipynb
 #
 #
