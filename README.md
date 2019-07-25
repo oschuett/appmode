@@ -71,3 +71,6 @@ With the included [Dockerfile](./Dockerfile) a development environment can be qu
 3. `docker build --tag appmode_dev ./`
 4. `docker run --init -ti -p127.0.0.1:8888:8888 appmode_dev`
 5. Browse to `http://localhost:8888/apps/example_app.ipynb`
+
+## Acknowledgements
+Appmode has been developed with the support of the [NCCR MARVEL](http://nccr-marvel.ch/) funded by the Swiss National Science Foundation.
