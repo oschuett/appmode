@@ -78,9 +78,9 @@ class AppmodeHandler(IPythonHandler):
         }
 
         # template parameters changed over time
-        if hasattr(orig_handler, "get_custom_frontend_exporters"):
-            get_cfw = orig_handler.get_custom_frontend_exporters
-            render_kwargs['get_custom_frontend_exporters'] = get_cfw
+        for parameter in ("get_custom_frontend_exporters", "get_frontend_exporters"):
+            if hasattr(orig_handler, parameter):
+                render_kwargs[parameter] = getattr(orig_handler, parameter)
 
         # Ok let's roll ....
         self.write(self.render_template('appmode.html', **render_kwargs))
