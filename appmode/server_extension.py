@@ -5,7 +5,7 @@ import itertools
 from notebook.utils import url_path_join
 from notebook.base.handlers import IPythonHandler, FilesRedirectHandler, path_regex
 import notebook.notebook.handlers as orig_handler
-from tornado import web
+from tornado import web, gen
 from traitlets.config import LoggingConfigurable
 from traitlets import Bool, Unicode
 
@@ -87,14 +87,21 @@ class AppmodeHandler(IPythonHandler):
 
     #===========================================================================
     @web.authenticated
+    @gen.coroutine
     def delete(self, path):
         path = path.strip('/')
         self.log.info('Appmode deleting: %s', path)
 
         # delete session, including the kernel
         sm = self.session_manager
-        s = sm.get_session(path=path)
-        sm.delete_session(session_id=s['id'])
+        if gen.is_coroutine_function(sm.get_session):
+            s = yield sm.get_session(path=path)
+        else:
+            s = sm.get_session(path=path)
+        if gen.is_coroutine_function(sm.delete_session):
+            yield sm.delete_session(session_id=s['id'])
+        else:
+            sm.delete_session(session_id=s['id'])
 
         # delete tmp copy
         cm = self.contents_manager
