@@ -12,7 +12,8 @@ FROM ubuntu:rolling
 USER root
 
 # Install some Debian package
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN export DEBIAN_FRONTEND="noninteractive" \
+  && apt-get update && apt-get install -y --no-install-recommends \
     python3-setuptools     \
     python3-wheel          \
     python3-pip            \
