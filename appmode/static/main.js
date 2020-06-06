@@ -16,13 +16,23 @@ define([
     "use strict";
 
     //==========================================================================
+    var get_cookie = function (name) {
+        // from tornado docs: http://www.tornadoweb.org/en/stable/guide/security.html
+        var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+        return r ? r[1] : undefined;
+    }
+
+    //==========================================================================
     var appmode_unload_handler = function (e) {
         var nb = Jupyter.notebook;
         var url_parts = [nb.base_url, 'apps', nb.notebook_path];
         var url = utils.url_path_join.apply(null, url_parts);
 
         // tell server to clean up session, kernel, and tmp notebook file.
-        utils.ajax(url, {cache: false, type: "DELETE", async: false});
+        var form_data = new FormData();
+        form_data.append("appmode_action", "delete");
+        form_data.append("_xsrf", get_cookie("_xsrf"));
+        navigator.sendBeacon(url, form_data);
     };
 
     //==========================================================================
@@ -123,7 +133,7 @@ define([
     //==========================================================================
     function initialize_step4() {
         // install unload-handler
-        window.onbeforeunload = appmode_unload_handler;
+        window.addEventListener('unload', appmode_unload_handler, false);
 
         // disable autosave
         Jupyter.notebook.set_autosave_interval(0);

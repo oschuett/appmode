@@ -88,7 +88,8 @@ class AppmodeHandler(IPythonHandler):
     #===========================================================================
     @web.authenticated
     @gen.coroutine
-    def delete(self, path):
+    def post(self, path):
+        assert self.get_body_arguments("appmode_action")[0] == "delete"
         path = path.strip('/')
         self.log.info('Appmode deleting: %s', path)
 
