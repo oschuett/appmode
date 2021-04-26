@@ -8,7 +8,7 @@
 #
 #
 #
-FROM ubuntu:rolling
+FROM ubuntu:20.04
 USER root
 
 # Install some Debian package
