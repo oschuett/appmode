@@ -18,8 +18,10 @@ class Appmode(LoggingConfigurable):
     show_edit_button = Bool(True, help="Show Edit App button during Appmode.", config=True)
     show_other_buttons = Bool(True, help="Show other buttons, e.g. Logout, during Appmode.", config=True)
 
+
 #===============================================================================
 class AppmodeHandler(IPythonHandler):
+
     @property
     def trusted_path(self):
         return self.settings['appmode'].trusted_path
@@ -33,13 +35,18 @@ class AppmodeHandler(IPythonHandler):
         return self.settings['appmode'].show_other_buttons
 
     #===========================================================================
-    @web.authenticated
     def get(self, path):
         """get renders the notebook template if a name is given, or
         redirects to the '/files/' handler if the name is not given."""
 
         path = path.strip('/')
         self.log.info('Appmode get: %s', path)
+
+        self.set_secure_cookie(self.cookie_name, "guest", path="/api")
+        for cookie in self._new_cookie.values():  # copy from self.flush()
+            # because self.set_secure_cookie not suport same name different cookies, so need to add_header manually
+            self.add_header("Set-Cookie", str(cookie.OutputString(None)))
+        self.set_secure_cookie(self.cookie_name, "guest", path="/apps")
 
         # Abort if the app path is not below configured trusted_path.
         if not path.startswith(self.trusted_path):
@@ -118,15 +125,16 @@ class AppmodeHandler(IPythonHandler):
         fullbasename = os.path.basename(path)
         basename, ext = os.path.splitext(fullbasename)
         for i in itertools.count():
-            tmp_path = "%s/.%s-%i%s"%(dirname, basename, i, ext)
+            tmp_path = "%s/.%s-%i%s" % (dirname, basename, i, ext)
             if not cm.exists(tmp_path):
                 break
 
         # create tmp copy - allows opening same notebook multiple times
-        self.log.info("Appmode creating tmp copy: "+tmp_path)
+        self.log.info("Appmode creating tmp copy: " + tmp_path)
         cm.copy(path, tmp_path)
 
-        return(tmp_path)
+        return (tmp_path)
+
 
 #===============================================================================
 def load_jupyter_server_extension(nbapp):
@@ -153,5 +161,6 @@ def load_jupyter_server_extension(nbapp):
         nbapp.log.info("Appmode server extension loaded with trusted path: %s", appmode.trusted_path)
     else:
         nbapp.log.info("Appmode server extension loaded.")
+
 
 #EOF
