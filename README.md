@@ -51,6 +51,7 @@ Appmode adds the following [configuration options](https://jupyter-notebook.read
 - `Appmode.trusted_path` Run only notebooks below this path in Appmode. Default: No restrictions.
 - `Appmode.show_edit_button` Show _Edit App_ button during Appmode. Default: True.
 - `Appmode.show_other_buttons` Show other buttons, e.g. Logout, during Appmode. Default: True.
+- `Appmode.temp_dir` Create temp notebooks under this directory. Default: Same directory as current notebook
 
 ## Client Side Customization
 

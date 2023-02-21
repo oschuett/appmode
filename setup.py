@@ -26,14 +26,13 @@ setup(
     packages=["appmode"],
     include_package_data = True,
     install_requires=['notebook>=5'],
+    python_requires='>=3.5',
     data_files=[('share/jupyter/nbextensions/appmode', [
                     'appmode/static/main.js',
                     'appmode/static/gears.svg'
     ])],
 
     classifiers=[
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.5",
         "License :: OSI Approved :: MIT License",
