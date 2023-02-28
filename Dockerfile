@@ -50,6 +50,6 @@ RUN pip3 install .                                           && \
 
 # Launch Notebook server
 EXPOSE 8888
-CMD ["jupyter-notebook", "--ip=0.0.0.0", "--allow-root", "--no-browser", "--NotebookApp.token=''"]
+CMD ["jupyter-notebook", "--ip=0.0.0.0", "--allow-root", "--no-browser", "--ContentsManager.allow_hidden=True", "--NotebookApp.token=''"]
 
 #EOF
