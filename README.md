@@ -52,6 +52,19 @@ Appmode adds the following [configuration options](https://jupyter-notebook.read
 - `Appmode.show_edit_button` Show _Edit App_ button during Appmode. Default: True.
 - `Appmode.show_other_buttons` Show other buttons, e.g. Logout, during Appmode. Default: True.
 - `Appmode.temp_dir` Create temp notebooks under this directory. Default: Same directory as current notebook
+- `Appmode.hidden_temp_files` Create temp notebooks as hidden files. Default: True
+
+Writing to hidden files is disabled in newer versions of notebook. You will need to enable one of the following
+configuration options to run appmode:
+```
+ContentsManager.allow_hidden=True
+or
+Appmode.hidden_temp_files=False
+```
+Example:
+```
+jupyter notebook --Appmode.hidden_temp_files=False
+```
 
 ## Client Side Customization
 

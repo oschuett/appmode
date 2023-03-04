@@ -5,6 +5,7 @@ import itertools
 from notebook.utils import url_path_join
 from notebook.base.handlers import IPythonHandler, FilesRedirectHandler, path_regex
 import notebook.notebook.handlers as orig_handler
+import notebook
 import collections.abc
 from tornado import web
 from traitlets.config import LoggingConfigurable
@@ -19,6 +20,7 @@ class Appmode(LoggingConfigurable):
     show_edit_button = Bool(True, help="Show Edit App button during Appmode.", config=True)
     show_other_buttons = Bool(True, help="Show other buttons, e.g. Logout, during Appmode.", config=True)
     temp_dir = Unicode('', help="Create temporary Appmode notebooks in this directory.", config=True)
+    hidden_temp_files = Bool(True, help="Temporary Appmode notebooks are hidden files.", config=True)
 
 #===============================================================================
 class AppmodeHandler(IPythonHandler):
@@ -37,6 +39,10 @@ class AppmodeHandler(IPythonHandler):
     @property
     def temp_dir(self):
         return self.settings['appmode'].temp_dir
+
+    @property
+    def hidden_temp_files(self):
+        return self.settings['appmode'].hidden_temp_files
 
     #===========================================================================
     @web.authenticated
@@ -124,6 +130,8 @@ class AppmodeHandler(IPythonHandler):
             os.makedirs(dirname)
         fullbasename = os.path.basename(path)
         basename, ext = os.path.splitext(fullbasename)
+        if self.hidden_temp_files:
+            basename = '.' + basename
         for i in itertools.count():
             tmp_path = "%s/%s-%i%s"%(dirname, basename, i, ext)
             if not cm.exists(tmp_path):
@@ -139,8 +147,14 @@ class AppmodeHandler(IPythonHandler):
 #===============================================================================
 def load_jupyter_server_extension(nbapp):
     tmpl_dir = os.path.dirname(__file__)
+    notebook_tmpl_dir = os.path.join(notebook.__path__[0], 'templates')
     # does not work, because init_webapp() happens before init_server_extensions()
-    #nbapp.extra_template_paths.append(tmpl_dir) # dows
+    # nbapp.extra_template_paths.append(tmpl_dir) # dows
+
+    # For jupyter server, the notebook templates are not available in the default search paths. This can be addressed
+    # by using --ServerApp.extra_template_paths='***site-packages***\notebook\templates', but this is messy.
+    # To emulate this instead insert the notebook template directory at the start of the searchpath
+    # These will be used last, so the notebook.html resolves, but the page.html is still from jupyter server templates
 
     # For configuration values that can be set server side
     appmode = Appmode(parent=nbapp)
@@ -151,6 +165,7 @@ def load_jupyter_server_extension(nbapp):
     for loader in getattr(rootloader, 'loaders', [rootloader]):
         if hasattr(loader, 'searchpath') and tmpl_dir not in loader.searchpath:
             loader.searchpath.append(tmpl_dir)
+            loader.searchpath.insert(0, notebook_tmpl_dir)
 
     web_app = nbapp.web_app
     host_pattern = '.*$'
