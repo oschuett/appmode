@@ -147,7 +147,7 @@ class AppmodeHandler(IPythonHandler):
 #===============================================================================
 def load_jupyter_server_extension(nbapp):
     tmpl_dir = os.path.dirname(__file__)
-    notebook_tmpl_dir = os.path.join(notebook.__path__[0], 'templates')
+    notebook_tmpl_dir = os.path.join(os.path.dirname(notebook.__file__), 'templates')
     # does not work, because init_webapp() happens before init_server_extensions()
     # nbapp.extra_template_paths.append(tmpl_dir) # dows
 
