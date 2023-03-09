@@ -12,7 +12,7 @@ from traitlets.config import LoggingConfigurable
 from traitlets import Bool, Unicode
 
 
-async def ensure_async(obj):
+async def await_if_awaitable(obj):
     """Convert a non-awaitable object to a coroutine if needed,
     and await if it was a coroutine.
 
@@ -72,7 +72,7 @@ class AppmodeHandler(IPythonHandler):
         cm = self.contents_manager
         # will raise 404 on not found
         try:
-            model = await ensure_async(cm.get(path, content=False))
+            model = await await_if_awaitable(cm.get(path, content=False))
         except web.HTTPError as e:
             if e.status_code == 404 and 'files' in path.split('/'):
                 # 404, but '/files/' in URL, let FilesRedirect take care of it
@@ -117,12 +117,12 @@ class AppmodeHandler(IPythonHandler):
         # delete session, including the kernel
         sm = self.session_manager
 
-        s = await ensure_async(sm.get_session(path=path))
-        await ensure_async(sm.delete_session(session_id=s['id']))
+        s = await await_if_awaitable(sm.get_session(path=path))
+        await await_if_awaitable(sm.delete_session(session_id=s['id']))
 
         # delete tmp copy
         cm = self.contents_manager
-        await ensure_async(cm.delete(path))
+        await await_if_awaitable(cm.delete(path))
         await self.finish()
 
     #===========================================================================
@@ -143,7 +143,7 @@ class AppmodeHandler(IPythonHandler):
 
         # create tmp copy - allows opening same notebook multiple times
         self.log.info("Appmode creating tmp copy: "+tmp_path)
-        await ensure_async(cm.copy(path, tmp_path))
+        await await_if_awaitable(cm.copy(path, tmp_path))
         return tmp_path
 
 
