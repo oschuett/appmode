@@ -1,15 +1,27 @@
 # -*- coding: utf-8 -*-
 
 import os
+import inspect
 import itertools
 from notebook.utils import url_path_join
 from notebook.base.handlers import IPythonHandler, FilesRedirectHandler, path_regex
 import notebook.notebook.handlers as orig_handler
 import notebook
-import collections.abc
 from tornado import web
 from traitlets.config import LoggingConfigurable
 from traitlets import Bool, Unicode
+
+
+async def ensure_async(obj):
+    """Convert a non-awaitable object to a coroutine if needed,
+    and await if it was a coroutine.
+
+    Designed to be called on the result of calling a function,
+    when that function could be asynchronous or not.
+    """
+    if inspect.isawaitable(obj):
+        obj = await obj
+    return obj
 
 
 class Appmode(LoggingConfigurable):
@@ -60,9 +72,7 @@ class AppmodeHandler(IPythonHandler):
         cm = self.contents_manager
         # will raise 404 on not found
         try:
-            model = cm.get(path, content=False)
-            if isinstance(model, collections.abc.Awaitable):
-                model = await model
+            model = await ensure_async(cm.get(path, content=False))
         except web.HTTPError as e:
             if e.status_code == 404 and 'files' in path.split('/'):
                 # 404, but '/files/' in URL, let FilesRedirect take care of it
@@ -107,18 +117,12 @@ class AppmodeHandler(IPythonHandler):
         # delete session, including the kernel
         sm = self.session_manager
 
-        s = sm.get_session(path=path)
-        if isinstance(s, collections.abc.Awaitable):
-            s = await s
-        sd = sm.delete_session(session_id=s['id'])
-        if isinstance(sd, collections.abc.Awaitable):
-            await sd
+        s = await ensure_async(sm.get_session(path=path))
+        await ensure_async(sm.delete_session(session_id=s['id']))
 
         # delete tmp copy
         cm = self.contents_manager
-        pd = cm.delete(path)
-        if isinstance(pd, collections.abc.Awaitable):
-            await pd
+        await ensure_async(cm.delete(path))
         await self.finish()
 
     #===========================================================================
@@ -139,10 +143,9 @@ class AppmodeHandler(IPythonHandler):
 
         # create tmp copy - allows opening same notebook multiple times
         self.log.info("Appmode creating tmp copy: "+tmp_path)
-        pc = cm.copy(path, tmp_path)
-        if isinstance(pc, collections.abc.Awaitable):
-            await pc
+        await ensure_async(cm.copy(path, tmp_path))
         return tmp_path
+
 
 #===============================================================================
 def load_jupyter_server_extension(nbapp):
