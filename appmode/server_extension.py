@@ -32,7 +32,6 @@ class Appmode(LoggingConfigurable):
     show_edit_button = Bool(True, help="Show Edit App button during Appmode.", config=True)
     show_other_buttons = Bool(True, help="Show other buttons, e.g. Logout, during Appmode.", config=True)
     temp_dir = Unicode('', help="Create temporary Appmode notebooks in this directory.", config=True)
-    hidden_temp_files = Bool(True, help="Temporary Appmode notebooks are hidden files.", config=True)
 
 #===============================================================================
 class AppmodeHandler(IPythonHandler):
@@ -51,10 +50,6 @@ class AppmodeHandler(IPythonHandler):
     @property
     def temp_dir(self):
         return self.settings['appmode'].temp_dir
-
-    @property
-    def hidden_temp_files(self):
-        return self.settings['appmode'].hidden_temp_files
 
     #===========================================================================
     @web.authenticated
@@ -134,7 +129,7 @@ class AppmodeHandler(IPythonHandler):
             os.makedirs(dirname)
         fullbasename = os.path.basename(path)
         basename, ext = os.path.splitext(fullbasename)
-        if self.hidden_temp_files:
+        if cm.allow_hidden:
             basename = '.' + basename
         for i in itertools.count():
             tmp_path = "%s/%s-%i%s"%(dirname, basename, i, ext)
