@@ -24,7 +24,7 @@ setup(
     description="A Jupyter extensions that turns notebooks into web applications.",
     packages=["appmode"],
     include_package_data=True,
-    install_requires=["notebook>=5"],
+    install_requires=["jupyter_server", "nbclassic"],
     python_requires=">=3.5",
     data_files=[
         (
@@ -41,7 +41,7 @@ setup(
 )
 
 print("\nPlease run the following commands to enable appmode:")
-print("  jupyter serverextension enable --py --sys-prefix appmode")
-print("  jupyter nbextension     enable --py --sys-prefix appmode")
+print("  jupyter server extension enable --py --sys-prefix appmode")
+print("  jupyter nbextension      enable --py --sys-prefix appmode")
 
 # EOF

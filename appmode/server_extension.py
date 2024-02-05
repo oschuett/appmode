@@ -3,10 +3,14 @@
 import os
 import inspect
 import itertools
-from notebook.utils import url_path_join
-from notebook.base.handlers import IPythonHandler, FilesRedirectHandler, path_regex
-import notebook.notebook.handlers as orig_handler
-import notebook
+from jupyter_server.utils import url_path_join
+from jupyter_server.base.handlers import (
+    JupyterHandler,
+    FilesRedirectHandler,
+    path_regex,
+)
+import nbclassic.notebook.handlers as orig_handler
+import nbclassic
 from tornado import web
 from traitlets.config import LoggingConfigurable
 from traitlets import Bool, Unicode
@@ -44,7 +48,7 @@ class Appmode(LoggingConfigurable):
 
 
 # ===============================================================================
-class AppmodeHandler(IPythonHandler):
+class AppmodeHandler(JupyterHandler):
     @property
     def trusted_path(self):
         return self.settings["appmode"].trusted_path
@@ -161,7 +165,7 @@ class AppmodeHandler(IPythonHandler):
 # ===============================================================================
 def load_jupyter_server_extension(nbapp):
     tmpl_dir = os.path.dirname(__file__)
-    notebook_tmpl_dir = os.path.join(os.path.dirname(notebook.__file__), "templates")
+    notebook_tmpl_dir = os.path.join(os.path.dirname(nbclassic.__file__), "templates")
     # does not work, because init_webapp() happens before init_server_extensions()
     # nbapp.extra_template_paths.append(tmpl_dir) # dows
 
