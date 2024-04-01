@@ -52,7 +52,7 @@ define([
 
         // build new URL
         var base_url = Jupyter.notebook.base_url;
-        var prefix = base_url+"notebooks/"
+        var prefix = base_url+"nbclassic/notebooks/"
         var path = window.location.pathname.substring(prefix.length);
         var search = window.location.search;
         var scroll = "appmode_scroll=" + $('#site').scrollTop();
@@ -74,7 +74,7 @@ define([
         var base_url = Jupyter.notebook.base_url;
         var prefix = base_url+"apps/"
         var path = window.location.pathname.substring(prefix.length);
-        var new_url = base_url + "notebooks/" + path + window.location.search;
+        var new_url = base_url + "nbclassic/notebooks/" + path + window.location.search;
 
         // goto new URL
         // Not using location.pathname as it might urlencode the path again
@@ -99,7 +99,7 @@ define([
     function initialize_step2() {
         // scroll to last position if in normal mode
         var base_url = Jupyter.notebook.base_url;
-        if(window.location.pathname.startsWith(base_url+"notebooks/")){
+        if(window.location.pathname.startsWith(base_url+"nbclassic/notebooks/")){
              var url = window.location.href;
              var m = url.match(/appmode_scroll=(\d+)/);
              if(m)

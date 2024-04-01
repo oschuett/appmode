@@ -25,8 +25,8 @@ setup(
 
     packages=["appmode"],
     include_package_data = True,
-    install_requires=['notebook>=5'],
-    python_requires='>=3.5',
+    install_requires=['nblcassic>=1'],
+    python_requires='>=3.7',
     data_files=[('share/jupyter/nbextensions/appmode', [
                     'appmode/static/main.js',
                     'appmode/static/gears.svg'
@@ -34,7 +34,7 @@ setup(
 
     classifiers=[
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.7",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
@@ -42,7 +42,7 @@ setup(
 )
 
 print("\nPlease run the following commands to enable appmode:")
-print("  jupyter serverextension enable --py --sys-prefix appmode")
-print("  jupyter nbextension     enable --py --sys-prefix appmode")
+print("  jupyter server extension enable --py --sys-prefix appmode")
+print("  jupyter nbclassic-extension enable --py --sys-prefix appmode")
 
 #EOF
