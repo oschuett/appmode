@@ -25,7 +25,7 @@ setup(
 
     packages=["appmode"],
     include_package_data = True,
-    install_requires=['nblcassic>=1'],
+    install_requires=['nbclassic>=1'],
     python_requires='>=3.7',
     data_files=[('share/jupyter/nbextensions/appmode', [
                     'appmode/static/main.js',
