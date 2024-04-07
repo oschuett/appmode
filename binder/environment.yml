@@ -1,0 +1,21 @@
+# a mybinder.org-ready environment for demoing appmode
+# this environment may also be used locally on Linux/MacOS/Windows, e.g.
+#
+#   conda env update --file binder/environment.yml
+#   conda activate appmode-demo
+#
+name: appmode-demo
+
+channels:
+  - conda-forge
+
+dependencies:
+  # runtime dependencies
+  - python >=3.10,<3.11.0a0
+  - nbclassic >=1.0.0,<2
+  # labextension build dependencies
+  - nodejs >=18,<19
+  - pip
+  - wheel
+  # additional packages for demos
+  - ipywidgets

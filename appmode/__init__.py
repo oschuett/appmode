@@ -10,7 +10,9 @@ def _jupyter_nbextension_paths():
         dest="appmode",
         require="appmode/main")]
 
-def _jupyter_server_extension_paths():
-    return [{"module":"appmode.server_extension"}]
+def _jupyter_server_extension_points():
+    from .server_extension import Appmode
+
+    return [{"module": "appmode.server_extension", "app": Appmode}]
 
 #EOF
