@@ -1,0 +1,15 @@
+/*
+    See the JupyterLab Developer Guide for useful CSS Patterns:
+
+    https://jupyterlab.readthedocs.io/en/stable/developer/css.html
+*/
+
+@import url('variables.css');
+
+.jp-AppmodeIcon {
+  background-image: var(--jp-icon-appmode);
+}
+
+.jp-AppmodePreview-renderOnSave {
+  align-items: center;
+}
