@@ -1,0 +1,7 @@
+[data-jp-theme-light="true"] {
+  --jp-icon-appmode: url("./gears.svg");
+}
+
+[data-jp-theme-light="false"] {
+  --jp-icon-appmode: url("./gears.svg");
+}

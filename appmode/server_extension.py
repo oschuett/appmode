@@ -3,7 +3,7 @@
 import os
 import inspect
 import itertools
-from jupyter_server.utils import url_path_join, ensure_async
+from jupyter_server.utils import url_path_join as ujoin, ensure_async
 from jupyter_server.base.handlers import JupyterHandler, FilesRedirectHandler, path_regex
 from jupyter_server.extension.handler import ExtensionHandlerMixin, ExtensionHandlerJinjaMixin
 import nbclassic.notebook.handlers as orig_handler
@@ -24,7 +24,7 @@ class Appmode(NotebookApp):
     show_other_buttons = Bool(True, help="Show other buttons, e.g. Logout, during Appmode.", config=True)
     temp_dir = Unicode('', help="Create temporary Appmode notebooks in this directory.", config=True)
 
-    extra_template_paths = [os.path.dirname(__file__)]
+    extra_template_paths = [ujoin(os.path.dirname(__file__), "templates")]
 
     def initialize_handlers(self):
         super(Appmode, self).initialize_handlers()

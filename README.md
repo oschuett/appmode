@@ -21,8 +21,6 @@ conda install --channel conda-forge appmode
 If you use ``pip``, you can install it as:
 ```
 pip install appmode
-jupyter nbextension     enable --py --sys-prefix appmode
-jupyter serverextension enable --py --sys-prefix appmode
 ```
 
 If you want to use [mybinder](https://mybinder.org) add the following `environment.yml` file to your repository:
@@ -35,7 +33,7 @@ dependencies:
 
 ## Description
 
-Appmode consist of a server-side and a notebook extension for Jupyter. Together these two extensions provide the following features:
+Appmode consist of a server-side and a notebook extension for Jupyter as well as a jupyterlab extension (adapted from [appmode-jupyterlab](https://github.com/osscar-org/appmode-jupyterlab)). Together these two extensions provide the following features:
 
 - One can view any notebook in appmode by clicking on the *Appmode* button in the toolbar. Alternatively one can change the url from ``baseurl/notebooks/foo.ipynb`` to ``baseurl/apps/foo.ipynb``. This also allows for direct links into appmode.
 

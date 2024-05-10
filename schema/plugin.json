@@ -1,0 +1,24 @@
+{  
+  "jupyter.lab.toolbars": {
+    "Notebook": [
+      {
+        "name": "open-with-appmode",
+        "command": "notebook:open-with-appmode",
+        "label": "Appmode",
+        "icon": "appmode:expand"
+      },
+      {
+        "name": "render-with-appmode",
+        "command": "notebook:render-with-appmode",
+        "label": "Preview Appmode",
+        "icon": "appmode:gears"
+      }
+    ]
+  },
+  "jupyter.lab.shortcuts": [],
+  "title": "appmode",
+  "description": "appmode settings.",
+  "type": "object",
+  "properties": {},
+  "additionalProperties": false
+}

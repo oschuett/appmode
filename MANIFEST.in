@@ -1,6 +1,0 @@
-include LICENSE.txt
-include appmode/appmode.html
-include appmode/appmode_top.css
-include appmode/appmode_bottom.css
-include appmode/static/gears.svg
-include appmode/static/main.js
