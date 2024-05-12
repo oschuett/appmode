@@ -21,8 +21,8 @@ conda install --channel conda-forge appmode
 If you use ``pip``, you can install it as:
 ```
 pip install appmode
-jupyter nbextension     enable --py --sys-prefix appmode
-jupyter serverextension enable --py --sys-prefix appmode
+jupyter nbclassic-extension enable --py --sys-prefix appmode
+jupyter server    extension enable --py --sys-prefix appmode
 ```
 
 If you want to use [mybinder](https://mybinder.org) add the following `environment.yml` file to your repository:

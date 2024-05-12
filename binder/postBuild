@@ -2,7 +2,6 @@
 
 pip install .
 jupyter nbclassic-extension enable --py --sys-prefix appmode
-jupyter server extension enable --py --sys-prefix appmode
-
+jupyter server    extension enable --py --sys-prefix appmode
 
 #EOF
