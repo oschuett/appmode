@@ -13,10 +13,14 @@ Click the binder badge to try it live without installing anything. This will tak
 
 ## Installation
 
+[![Conda](https://img.shields.io/conda/vn/conda-forge/appmode)](https://anaconda.org/conda-forge/appmode)
+
 If you use `conda`, you can install it as:
 ```
 conda install --channel conda-forge appmode
 ```
+
+[![PyPI](https://img.shields.io/pypi/v/appmode?label=pypi)](https://pypi.org/project/appmode/)
 
 If you use ``pip``, you can install it as:
 ```

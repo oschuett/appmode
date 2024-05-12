@@ -1,4 +1,4 @@
-include LICENSE.txt
+include LICENSE
 include appmode/appmode.html
 include appmode/appmode_top.css
 include appmode/appmode_bottom.css
