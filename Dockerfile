@@ -32,15 +32,14 @@ RUN export DEBIAN_FRONTEND="noninteractive" \
 RUN pip3 install notebook
 
 # install ipywidgets
-RUN pip3 install ipywidgets  && \
-    jupyter nbextension enable --sys-prefix --py widgetsnbextension
+RUN pip3 install ipywidgets
 
 # install Appmode
 COPY . /opt/appmode
 WORKDIR /opt/appmode/
-RUN pip3 install .                                           && \
-    jupyter nbextension     enable --py --sys-prefix appmode && \
-    jupyter serverextension enable --py --sys-prefix appmode
+RUN pip3 install .                                               && \
+    jupyter nbclassic-extension enable --py --sys-prefix appmode && \
+    jupyter server    extension enable --py --sys-prefix appmode
 
 # Possible Customizations
 # RUN mkdir -p ~/.jupyter/custom/                                          && \
@@ -50,6 +49,6 @@ RUN pip3 install .                                           && \
 
 # Launch Notebook server
 EXPOSE 8888
-CMD ["jupyter-notebook", "--ip=0.0.0.0", "--allow-root", "--no-browser", "--NotebookApp.token=''"]
+CMD ["jupyter", "nbclassic", "--ip=0.0.0.0", "--allow-root", "--no-browser", "--NotebookApp.token=''"]
 
 #EOF
