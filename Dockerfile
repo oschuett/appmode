@@ -8,31 +8,32 @@
 #
 #
 #
-FROM ubuntu:22.04
-USER root
+FROM ubuntu:24.04
 
 # Install some Debian package
-RUN export DEBIAN_FRONTEND="noninteractive" \
-  && apt-get update && apt-get install -y --no-install-recommends \
-    python3-setuptools     \
-    python3-wheel          \
-    python3-pip            \
-    less                  \
-    nano                  \
-    sudo                  \
-    git                   \
-    npm                   \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git                                                          \
+    less                                                         \
+    nano                                                         \
+    python3                                                      \
+    python3-pip                                                  \
+    python3-venv                                                 \
   && rm -rf /var/lib/apt/lists/*
+
+# Create Python virtual environment to make pip3 happy.
+WORKDIR /opt/venv
+RUN python3 -m venv .
+ENV PATH="/opt/venv/bin:${PATH}"
 
 # install Jupyter from git
 # WORKDIR /opt/notebook/
 # RUN git clone https://github.com/jupyter/notebook.git . && pip3 install .
 
 # install Jupyter via pip
-RUN pip3 install notebook
+RUN pip3 install notebook==7.5.1
 
 # install ipywidgets
-RUN pip3 install ipywidgets
+RUN pip3 install ipywidgets==8.1.8
 
 # install Appmode
 COPY . /opt/appmode
