@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import print_function
 from setuptools import setup
 from os import path
 import re
@@ -10,7 +7,7 @@ def find_version():
     here = path.abspath(path.dirname(__file__))
     absfn = path.join(here, "appmode/__init__.py")
     content = open(absfn).read()
-    match = re.search(r"\n__version__ = ['\"]([^'\"]+)['\"]", content)
+    match = re.search(r"__version__ = ['\"]([^'\"]+)['\"]", content)
     return match.group(1)
 
 
