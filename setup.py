@@ -27,7 +27,11 @@ setup(
         (
             "share/jupyter/nbextensions/appmode",
             ["appmode/static/main.js", "appmode/static/gears.svg"],
-        )
+        ),
+        (
+            "etc/jupyter/jupyter_server_config.d",
+            ["jupyter-config/jupyter_server_config.d/appmode.json"],
+        ),
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
