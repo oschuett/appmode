@@ -91,12 +91,12 @@ class AppmodeHandler(ExtensionHandlerJinjaMixin, ExtensionHandlerMixin, JupyterH
         except web.HTTPError as e:
             if e.status_code == 404 and "files" in path.split("/"):
                 # 404, but '/files/' in URL, let FilesRedirect take care of it
-                return FilesRedirectHandler.redirect_to_files(self, path)
+                return await ensure_async(FilesRedirectHandler.redirect_to_files(self, path))
             else:
                 raise
         if model["type"] != "notebook":
             # not a notebook, redirect to files
-            return FilesRedirectHandler.redirect_to_files(self, path)
+            return await ensure_async(FilesRedirectHandler.redirect_to_files(self, path))
 
         # fix back button navigation
         self.add_header(
