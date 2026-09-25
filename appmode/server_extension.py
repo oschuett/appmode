@@ -133,13 +133,18 @@ class AppmodeHandler(ExtensionHandlerJinjaMixin, ExtensionHandlerMixin, JupyterH
 
         # delete session, including the kernel
         sm = self.session_manager
-
-        s = await ensure_async(sm.get_session(path=path))
-        await ensure_async(sm.delete_session(session_id=s["id"]))
+        try:
+            s = await ensure_async(sm.get_session(path=path))
+        except web.HTTPError:
+            # Page was left before its kernel session was created.
+            pass
+        else:
+            await ensure_async(sm.delete_session(session_id=s["id"]))
 
         # delete tmp copy
         cm = self.contents_manager
-        await ensure_async(cm.delete(path))
+        if await ensure_async(cm.file_exists(path)):
+            await ensure_async(cm.delete(path))
         await self.finish()
 
     # ===========================================================================

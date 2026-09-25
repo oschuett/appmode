@@ -23,7 +23,7 @@ define([
     }
 
     //==========================================================================
-    var appmode_unload_handler = function (e) {
+    var appmode_pagehide_handler = function (e) {
         var nb = Jupyter.notebook;
         var url_parts = [nb.base_url, 'apps', nb.notebook_path];
         var url = utils.url_path_join.apply(null, url_parts);
@@ -33,6 +33,14 @@ define([
         form_data.append("appmode_action", "delete");
         form_data.append("_xsrf", get_cookie("_xsrf"));
         navigator.sendBeacon(url, form_data);
+    };
+
+    //==========================================================================
+    var appmode_pageshow_handler = function (e) {
+        // Restored from the back/forward cache: its kernel was already deleted on pagehide.
+        if (e.persisted) {
+            window.location.reload();
+        }
     };
 
     //==========================================================================
@@ -138,8 +146,9 @@ define([
 
     //==========================================================================
     function initialize_step4() {
-        // install unload-handler
-        window.addEventListener('unload', appmode_unload_handler, false);
+        // 'unload' is unreliable (not fired on mobile, tab discard, or bfcache) and deprecated.
+        window.addEventListener('pagehide', appmode_pagehide_handler, false);
+        window.addEventListener('pageshow', appmode_pageshow_handler, false);
 
         // disable autosave
         Jupyter.notebook.set_autosave_interval(0);
