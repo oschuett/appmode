@@ -25,17 +25,15 @@ WORKDIR /opt/venv
 RUN python3 -m venv .
 ENV PATH="/opt/venv/bin:${PATH}"
 
-# install Jupyter from git
+# Install Jupyter from git.
 # WORKDIR /opt/notebook/
 # RUN git clone https://github.com/jupyter/notebook.git . && pip3 install .
 
-# install Jupyter via pip
-RUN pip3 install notebook==7.5.1
+# Install requirements via pip.
+COPY binder/requirements.txt .
+RUN pip3 install -r requirements.txt
 
-# install ipywidgets
-RUN pip3 install ipywidgets==8.1.8
-
-# install Appmode
+# Install Appmode.
 COPY . /opt/appmode
 WORKDIR /opt/appmode/
 RUN pip3 install .                                               && \
