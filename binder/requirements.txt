@@ -1,0 +1,2 @@
+notebook==7.5.1
+ipywidgets==8.1.8
